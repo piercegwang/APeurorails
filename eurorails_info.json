@@ -1,0 +1,65 @@
+{ "cities": [
+    {"paris": [
+      { "coords": [0,0],
+        "loads": [],
+        "island": "mainland",
+        "type": "major"
+      }
+    ]},
+    {"luxembourg": [
+      { "coords": [7,0],
+        "loads": ["steel"],
+        "island": "mainland",
+        "type": "diminished"
+      }
+    ]},
+    {"frankfurt": [
+      { "coords": [11,0],
+        "loads": ["beer", "wine"],
+        "island": "mainland",
+        "type": "diminished"
+      }
+    ]},
+    {"stuttgart": [
+      { "coords": [13,-3],
+        "loads": ["cars"],
+        "island": "mainland",
+        "type": "diminished"
+      }
+    ]},
+    {"toulouse": [
+      { "coords": [1,-14],
+        "loads": ["wheat"],
+        "island": "mainland",
+        "type": "diminished"
+      }
+    ]},
+    {"london": [
+      { "coords": [-6,9],
+        "loads": ["wheat"],
+        "island": "england",
+        "type": "diminished"
+      }
+    ]},
+    {"nantes": [
+      { "coords": [-7,-2],
+        "loads": ["machinery", "cattle"],
+        "island": "mainland",
+        "type": "diminished"
+      }
+    ]},
+    {"bordeaux": [
+      { "coords": [-4,-9],
+        "loads": ["wine"],
+        "island": "mainland",
+        "type": "diminished"
+      }
+    ]},
+    {"zurich": [
+      { "coords": [5,-8],
+        "loads": ["wine"],
+        "island": "mainland",
+        "type": "diminished"
+      }
+    ]},
+]}
