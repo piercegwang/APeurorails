@@ -1,95 +1,95 @@
 
 {
-  "cities": [
-    {"paris":
+  "cities": {
+    "paris":
       { "coords": [0,0],
         "loads": [],
         "island": "mainland",
         "type": "major"
       }
-    },
-    {"luxembourg":
+    ,
+    "luxembourg":
       { "coords": [7,0],
         "loads": ["steel"],
         "island": "mainland",
         "type": "small"
       }
-    },
-    {"frankfurt":
+    ,
+    "frankfurt":
       { "coords": [11,0],
         "loads": ["beer", "wine"],
         "island": "mainland",
         "type": "small"
       }
-    },
-    {"stuttgart":
+    ,
+    "stuttgart":
       { "coords": [13,-3],
         "loads": ["cars"],
         "island": "mainland",
         "type": "small"
       }
-    },
-    {"toulouse":
+    ,
+    "toulouse":
       { "coords": [1,-14],
         "loads": ["wheat"],
         "island": "mainland",
         "type": "small"
       }
-    },
-    {"london":
+    ,
+    "london":
       { "coords": [-6,9],
         "loads": ["wheat"],
         "island": "england",
         "type": "small"
       }
-    },
-    {"nantes":
+    ,
+    "nantes":
       { "coords": [-7,-2],
         "loads": ["machinery", "cattle"],
         "island": "mainland",
         "type": "small"
       }
-    },
-    {"bordeaux":
+    ,
+    "bordeaux":
       { "coords": [-4,-9],
         "loads": ["wine"],
         "island": "mainland",
         "type": "small"
       }
-    },
-    {"zurick":
+    ,
+    "zurick":
       { "coords": [5,-8],
         "loads": ["chocolate"],
         "island": "mainland",
         "type": "medium"
       }
-    },
-    {"lyon":
+    ,
+    "lyon":
       { "coords": [-4,-10],
         "loads": ["wheat"],
         "island": "mainland",
         "type": "medium"
       }
-    },
-    {"bern":
+    ,
+    "bern":
       { "coords": [3,-8],
         "loads": ["cattle", "cheese"],
         "island": "mainland",
         "type": "medium"
       }
-    },
-    {"torino":
+    ,
+    "torino":
       { "coords": [-1,-13],
         "loads": ["cars"],
         "island": "mainland",
         "type": "medium"
       }
-    },
-    {"marseille":
+    ,
+    "marseille":
       { "coords": [-1,-13],
         "loads": ["cars"],
         "island": "mainland",
         "type": "medium"
       }
-    }
-]}
+  }
+}
