@@ -1,4 +1,6 @@
-{ "cities": [
+
+{
+  "cities": [
     {"paris":
       { "coords": [0,0],
         "loads": [],
@@ -89,5 +91,5 @@
         "island": "mainland",
         "type": "medium"
       }
-    },
+    }
 ]}

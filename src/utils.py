@@ -4,9 +4,10 @@ def load_database(filename):
     """
     Loads JSON database of Eurorails.
 
-    :param filename:
-    :return:
+    :param filename: path to database
+    :return: database as a dictionary
     """
-    database = json.loads(filename)
+    with open(filename, 'r') as f:
+        database = json.load(f)
     return database
 
