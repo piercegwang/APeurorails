@@ -10,56 +10,84 @@
       { "coords": [7,0],
         "loads": ["steel"],
         "island": "mainland",
-        "type": "diminished"
+        "type": "small"
       }
     ]},
     {"frankfurt": [
       { "coords": [11,0],
         "loads": ["beer", "wine"],
         "island": "mainland",
-        "type": "diminished"
+        "type": "small"
       }
     ]},
     {"stuttgart": [
       { "coords": [13,-3],
         "loads": ["cars"],
         "island": "mainland",
-        "type": "diminished"
+        "type": "small"
       }
     ]},
     {"toulouse": [
       { "coords": [1,-14],
         "loads": ["wheat"],
         "island": "mainland",
-        "type": "diminished"
+        "type": "small"
       }
     ]},
     {"london": [
       { "coords": [-6,9],
         "loads": ["wheat"],
         "island": "england",
-        "type": "diminished"
+        "type": "small"
       }
     ]},
     {"nantes": [
       { "coords": [-7,-2],
         "loads": ["machinery", "cattle"],
         "island": "mainland",
-        "type": "diminished"
+        "type": "small"
       }
     ]},
     {"bordeaux": [
       { "coords": [-4,-9],
         "loads": ["wine"],
         "island": "mainland",
-        "type": "diminished"
+        "type": "small"
       }
     ]},
-    {"zurich": [
+    {"zurick": [
       { "coords": [5,-8],
-        "loads": ["wine"],
+        "loads": ["chocolate"],
         "island": "mainland",
-        "type": "diminished"
+        "type": "medium"
+      }
+    ]},
+    {"lyon": [
+      { "coords": [-4,-10],
+        "loads": ["wheat"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ]},
+    {"bern": [
+      { "coords": [3,-8],
+        "loads": ["cattle", "cheese"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ]},
+    {"torino": [
+      { "coords": [-1,-13],
+        "loads": ["cars"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ]},
+    {"torino": [
+      { "coords": [-1,-13],
+        "loads": ["cars"],
+        "island": "mainland",
+        "type": "medium"
       }
     ]},
 ]}
