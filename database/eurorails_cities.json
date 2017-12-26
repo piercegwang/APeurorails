@@ -12,84 +12,309 @@
       { "coords": [7,0],
         "loads": ["steel"],
         "island": "mainland",
-        "type": "small"
+        "type": "medium"
       }
     ,
     "frankfurt":
       { "coords": [11,0],
         "loads": ["beer", "wine"],
         "island": "mainland",
-        "type": "small"
+        "type": "medium"
       }
     ,
     "stuttgart":
       { "coords": [13,-3],
         "loads": ["cars"],
         "island": "mainland",
-        "type": "small"
+        "type": "medium"
       }
     ,
     "toulouse":
       { "coords": [1,-14],
         "loads": ["wheat"],
         "island": "mainland",
-        "type": "small"
+        "type": "medium"
       }
     ,
     "london":
       { "coords": [-6,9],
         "loads": ["wheat"],
         "island": "england",
-        "type": "small"
+        "type": "medium"
       }
     ,
     "nantes":
       { "coords": [-7,-2],
         "loads": ["machinery", "cattle"],
         "island": "mainland",
-        "type": "small"
+        "type": "medium"
       }
     ,
     "bordeaux":
       { "coords": [-4,-9],
         "loads": ["wine"],
         "island": "mainland",
-        "type": "small"
+        "type": "medium"
       }
     ,
-    "zurick":
+    "zurich":
       { "coords": [5,-8],
         "loads": ["chocolate"],
         "island": "mainland",
-        "type": "medium"
+        "type": "small"
       }
     ,
     "lyon":
       { "coords": [-4,-10],
         "loads": ["wheat"],
         "island": "mainland",
-        "type": "medium"
+        "type": "small"
       }
     ,
     "bern":
       { "coords": [3,-8],
         "loads": ["cattle", "cheese"],
         "island": "mainland",
-        "type": "medium"
+        "type": "small"
       }
     ,
     "torino":
       { "coords": [-1,-13],
         "loads": ["cars"],
         "island": "mainland",
-        "type": "medium"
+        "type": "small"
       }
     ,
     "marseille":
-      { "coords": [-1,-13],
-        "loads": ["cars"],
+      { "coords": [-8,-17],
+        "loads": ["bauxite"],
         "island": "mainland",
         "type": "medium"
       }
+    ,
+    "milano":
+      { "coords": [15,-13],
+        "loads": [],
+        "island": "mainland",
+        "type": "major"
+      }
+    ,
+    "firenze":
+      { "coords": [21,-19],
+        "loads": ["marble"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "roma":
+      { "coords": [25,-25],
+        "loads": [],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "napoli":
+      { "coords": [30,-29],
+        "loads": ["tabacco"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "sarajevo":
+      { "coords": [35,-22],
+        "loads": ["wood", "labor"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "zagreb":
+      { "coords": [28,-15],
+        "loads": ["labor"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "beograd":
+      { "coords": [39,-19],
+        "loads": ["copper", "labor", "oil"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "budapest":
+      { "coords": [32,-11],
+        "loads": ["bauxite"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "wien":
+      { "coords": [26,-8],
+        "loads": ["wine"],
+        "island": "mainland",
+        "type": "large"
+      }
+    ,
+    "krakow":
+      { "coords": [31,-4],
+        "loads": ["coal"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "praha":
+      { "coords": [21,-2],
+        "loads": ["beer"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "wroclaw":
+      { "coords": [24,0],
+        "loads": ["copper", "coal"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "lodz":
+      { "coords": [27,2],
+        "loads": ["potatoes"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "warszawa":
+      { "coords": [29,3],
+        "loads": ["ham"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "kaliningrad":
+      { "coords": [26,10],
+        "loads": ["iron"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "szczecin":
+      { "coords": [17,8],
+        "loads": ["potatoes"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "berlin":
+      { "coords": [17,5],
+        "loads": [],
+        "island": "mainland",
+        "type": "major"
+      }
+    ,
+    "leipzig":
+      { "coords": [17,5],
+        "loads": ["china"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "munchen":
+      { "coords": [18,-7],
+        "loads": ["cars", "beer"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "venezia":
+      { "coords": [21,-15],
+        "loads": [],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "hamburg":
+      { "coords": [10,9],
+        "loads": ["imports"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "bremen":
+      { "coords": [8,9],
+        "loads": ["machinery"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "ruhr":
+      { "coords": [7,4],
+        "loads": ["tourists", "steel"],
+        "island": "mainland",
+        "type": "major"
+      }
+    ,
+    "holland":
+      { "coords": [2,8],
+        "loads": ["cheese", "flowers"],
+        "island": "mainland",
+        "type": "major"
+      }
+    ,
+    "antwerpen":
+      { "coords": [2,4],
+        "loads": ["imports"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "bruxelles":
+      { "coords": [2,3],
+        "loads": ["chocolate"],
+        "island": "mainland",
+        "type": "medium"
+      }
+    ,
+    "arhus":
+      { "coords": [8,17],
+        "loads": ["cheese"],
+        "island": "mainland",
+        "type": "small"
+      }
+    ,
+    "kobenhavn":
+      { "coords": [12,15],
+        "loads": ["cheese"],
+        "island": "sweden",
+        "type": "small"
+      }
+    ,
+    "goteborg":
+      { "coords": [10,20],
+        "loads": ["machinery"],
+        "island": "sweden",
+        "type": "small"
+      }
+    ,
+    "stockholm":
+      { "coords": [10,20],
+        "loads": ["wood", "iron"],
+        "island": "sweden",
+        "type": "medium"
+      }
+    ,
+    "oslo":
+      { "coords": [6,27],
+        "loads": ["fish", "wood", "oil"],
+        "island": "sweden",
+        "type": "small"
+      }
+    ,
+    "oslo":
+      { "coords": [6,27],
+        "loads": ["fish", "wood", "oil"],
+        "island": "sweden",
+        "type": "small"
+      }
+    ,
   }
 }
