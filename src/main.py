@@ -5,6 +5,22 @@ DEFAULT_DB_PATH = "../database/eurorails.json"
 DEFAULT_BOARD_PATH = "../database/board_ascii.txt"
 DEFAULT_IMG_PATH = "../databaser/board.jpg"
 
+def print_city(database, city):
+    entry = database["cities"][city]
+    output = city + ":\n"
+    output += "      Location: (" + str(entry["coords"][0]) + ", " + str(entry["coords"][1]) + ")\n"
+    output += "      Load: "
+    if len(entry["loads"]) > 0:
+        for l in entry["loads"]:
+            output += l + " "
+    else:
+        output += "none"
+    output += "\n"
+    output += "      Land: " + entry["island"] + "\n"
+    output += "      City Type: " + entry["type"]
+
+    return output
+
 def handle_query(database, visual, query):
     # QUERY = clear board
     if query == "clear":
@@ -12,26 +28,14 @@ def handle_query(database, visual, query):
 
     # QUERY = city
     elif query in database["cities"]:
-        entry = database["cities"][query]
-        output = query + ":\n"
-        output += "      Location: (" + str(entry["coords"][0]) + ", " + str(entry["coords"][1]) + ")\n"
-        output += "      Load: "
-        if len(entry["loads"]) > 0:
-            for l in entry["loads"]:
-                output += l + " "
-        else:
-            output += "none"
-        output += "\n"
-        output += "      Land: " + entry["island"] + "\n"
-        output += "      City Type: " + entry["type"]
-        return output
+        return print_city(database, query)
 
     # QUERY = load
     elif query in database["loads"]:
         entry = database["loads"][query]
         output = ""
         for city in entry:
-            output += handle_query(database, city) + "\n    "
+            output += print_city(database, city) + "\n    "
         return output
     else:
         raise ValueError("Query could not be processed.")
