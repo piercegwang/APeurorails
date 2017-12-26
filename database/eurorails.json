@@ -310,14 +310,14 @@
       }
     ,
     "madrid":
-      { "coords": [-9,19],
+      { "coords": [-9,-19],
         "loads": [],
         "island": "mainland",
         "type": "major"
       }
     ,
     "barcelona":
-      { "coords": [3,20],
+      { "coords": [3,-20],
         "loads": ["machinery"],
         "island": "mainland",
         "type": "medium"
