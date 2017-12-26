@@ -1,7 +1,7 @@
 import utils
 import sys
 
-DEFAULT_DB_PATH = "../database/eurorails_cities.json"
+DEFAULT_DB_PATH = "../database/eurorails.json"
 
 def handle_query(database, query):
     # QUERY = city
