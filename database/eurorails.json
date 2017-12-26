@@ -420,5 +420,138 @@
         "island": "scotland",
         "type": "small"
       }
+  },
+  "loads": {
+    "bauxite":
+      [ "budapest",
+        "marseille"
+      ],
+    "copper":
+      [ "beograd",
+        "wroclaw"
+      ],
+    "oil":
+      [ "aberdeen",
+        "beograd",
+        "newcastle",
+        "oslo"
+      ],
+    "beer":
+      [ "dublin",
+        "frankfurt",
+        "munchen",
+        "praha"
+      ],
+    "cork":
+      [ "lisboa",
+        "sevilla"
+      ],
+    "oranges":
+      [ "sevilla",
+        "valencia"
+      ],
+    "cars":
+      [ "manchester",
+        "munchen",
+        "stuttgart",
+        "torino"
+      ],
+    "fish":
+      [ "aberdeen",
+        "oslo",
+        "porto"
+      ],
+    "potatoes":
+      [ "belfast",
+        "lodz",
+        "szczecin"
+      ],
+    "cattle":
+      [ "bern",
+        "nantes"
+      ],
+    "flowers":
+      [ "holland"
+      ],
+    "sheep":
+      [ "bilbao",
+        "cork",
+        "glasgow"
+      ],
+    "ham":
+      [ "warszawa"
+      ],
+    "cheese":
+      [ "arhus",
+        "bern",
+        "holland",
+        "kobenhavn"
+      ],
+    "hops":
+      [ "cardiff"
+      ],
+    "steel":
+      [ "birmingham",
+        "luxembourg",
+        "ruhr"
+      ],
+    "china":
+      [ "birmingham",
+        "leipzig"
+      ],
+    "imports":
+      [ "antwerpen",
+        "hamburg"
+      ],
+    "tobacco":
+      [ "napoli"
+      ],
+    "chocolate":
+      [ "bruxelles",
+        "zurich"
+      ],
+    "iron":
+      [ "birmingham",
+        "kaliningrad",
+        "stockholm"
+      ],
+    "tourists":
+      [ "london",
+        "ruhr"
+      ],
+    "coal":
+      [ "cardiff",
+        "krakow",
+        "wroclaw"
+      ],
+    "labor":
+      [ "beograd",
+        "sarajevo",
+        "zagreb"
+      ],
+    "wheat":
+      [ "lyon",
+        "toulouse"
+      ],
+    "machinery":
+      [ "barcelona",
+        "bremen",
+        "goteburg",
+        "nantes"
+      ],
+    "wine":
+      [ "bordeaux",
+        "frankfurt",
+        "porto",
+        "wein"
+      ],
+    "marble":
+      [ "firenze"
+      ],
+    "wood":
+      [ "oslo",
+        "sarajevo",
+        "stockholm"
+      ]
   }
 }

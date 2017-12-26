@@ -6,7 +6,29 @@ DEFAULT_DB_PATH = "../database/eurorails_cities.json"
 def handle_query(database, query):
     # QUERY = city
     if query in database["cities"]:
-        return database[query]
+        entry = database["cities"][query]
+        output = query + ":\n"
+        output += "      Location: (" + str(entry["coords"][0]) + ", " + str(entry["coords"][1]) + ")\n"
+        output += "      Load: "
+        if len(entry["loads"]) > 0:
+            for l in entry["loads"]:
+                output += l + " "
+        else:
+            output += "none"
+        output += "\n"
+        output += "      Land: " + entry["island"] + "\n"
+        output += "      City Type: " + entry["type"]
+        return output
+
+    # QUERY = load
+    elif query in database["loads"]:
+        entry = database["loads"][query]
+        output = ""
+        for city in entry:
+            output += handle_query(database, city) + "\n    "
+        return output
+    else:
+        raise ValueError("Query could not be processed.")
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
@@ -25,7 +47,7 @@ if __name__ == '__main__':
             try:
                 output = handle_query(database, raw_expression)
                 if output is not None:
-                    print("  > ", output)
+                    print("  >", output)
             except Exception as error:
-                print("  > ERROR: " + repr(error))
+                print("  > ERROR:", str(error))
         i += 1
