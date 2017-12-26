@@ -1,11 +1,6 @@
 from PIL import Image, ImageDraw
 import json
 
-DEFAULT_BOARD_IMG_PATH = "../database/board.jpg"
-LINE_THICKNESS = 14
-CIRCLE_THICKNESS = 16
-RADIUS = 64
-
 class Board:
     def __init__(self, board, min_x, max_x, min_y, max_y):
         self.min_x = min_x
@@ -14,7 +9,33 @@ class Board:
         self.max_y = max_y
         self.board = board
     def __call__(self, x, y):
-        return self.board[MAX_Y - y][x - MIN_X]
+        return self.board[self.max_y - y][x - self.min_x]
+
+class Visual:
+    DEFAULT_BOARD_IMG_PATH = "../database/board.jpg"
+    LINE_THICKNESS = 14
+    CIRCLE_THICKNESS = 16
+    RADIUS = 64
+
+    def __init__(self, board_file):
+        self.board = Image.open(board_file)
+        self.draw = ImageDraw.Draw(self.board)
+
+    def draw_path(self, p1, p2, color):
+        self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
+
+    def mark_city(self, city_loc, color):
+        for i in range(Visual.RADIUS, Visual.RADIUS + Visual.CIRCLE_THICKNESS):
+            self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + (i - 1), city_loc[1] + (i - 1)), outline=color)
+            self.draw.ellipse((city_loc[0] - (i - 1), city_loc[1] - (i - 1), city_loc[0] + (i - 1), city_loc[1] + (i - 1)),
+                         outline=rgbcode)
+            self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + i, city_loc[1] + i), outline=color)
+
+    def clean(self):
+        self.board = Image.open(board_file)
+
+    def show(self):
+        self.board.show()
 
 def load_files(city_db_path, board_path):
     """
