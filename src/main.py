@@ -1,12 +1,17 @@
-import utils
+from utils import *
 from optparse import OptionParser
 
 DEFAULT_DB_PATH = "../database/eurorails.json"
 DEFAULT_BOARD_PATH = "../database/board_ascii.txt"
+DEFAULT_IMG_PATH = "../databaser/board.jpg"
 
-def handle_query(database, query):
+def handle_query(database, visual, query):
+    # QUERY = clear board
+    if query == "clear":
+        pass
+
     # QUERY = city
-    if query in database["cities"]:
+    elif query in database["cities"]:
         entry = database["cities"][query]
         output = query + ":\n"
         output += "      Location: (" + str(entry["coords"][0]) + ", " + str(entry["coords"][1]) + ")\n"
@@ -37,7 +42,8 @@ if __name__ == '__main__':
     parser.add_option("--board", dest="board_path", default=str(DEFAULT_BOARD_PATH))
     opts, args = parser.parse_args()
 
-    database, board = utils.load_files(opts.db_path, opts.board_path)
+    database, board = load_files(opts.db_path, opts.board_path)
+    visual = Visual(DEFAULT_IMG_PATH)
 
     i = 1
     while True:
@@ -46,7 +52,7 @@ if __name__ == '__main__':
             break
         else:
             try:
-                output = handle_query(database, raw_expression)
+                output = handle_query(database, visual, raw_expression)
                 if output is not None:
                     print("  >", output)
             except Exception as error:

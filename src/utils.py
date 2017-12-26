@@ -9,6 +9,7 @@ class Board:
         self.min_y = min_y
         self.max_y = max_y
         self.board = board
+        
     def __call__(self, x, y):
         return self.board[self.max_y - y][x - self.min_x]
 
@@ -19,6 +20,7 @@ class Visual:
     RADIUS = 64
 
     def __init__(self, board_file):
+        self.filepath = board_file
         self.board = Image.open(board_file)
         self.draw = ImageDraw.Draw(self.board)
         self.window = tk.Tk()
@@ -34,7 +36,7 @@ class Visual:
             self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + i, city_loc[1] + i), outline=color)
 
     def clean(self):
-        self.board = Image.open(board_file)
+        self.board = Image.open(self.filepath)
 
     def show(self):
         tkimage = ImageTk.PhotoImage(self.board)
