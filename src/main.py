@@ -1,7 +1,8 @@
 import utils
-import sys
+from optparse import OptionParser
 
 DEFAULT_DB_PATH = "../database/eurorails.json"
+DEFAULT_BOARD_PATH = "../database/board_ascii.txt"
 
 def handle_query(database, query):
     # QUERY = city
@@ -31,12 +32,12 @@ def handle_query(database, query):
         raise ValueError("Query could not be processed.")
 
 if __name__ == '__main__':
-    if len(sys.argv) >= 2:
-        db_path = sys.argv[1]
-    else:
-        db_path = DEFAULT_DB_PATH
+    parser = OptionParser()
+    parser.add_option("--database", dest="db_path", default=str(DEFAULT_DB_PATH))
+    parser.add_option("--board", dest="board_path", default=str(DEFAULT_BOARD_PATH))
+    opts, args = parser.parse_args()
 
-    database = utils.load_database(db_path)
+    database, board = utils.load_files(opts.db_path, opts.board_path)
 
     i = 1
     while True:
