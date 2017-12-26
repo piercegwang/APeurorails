@@ -1,4 +1,5 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageTk
+import tkinter as tk
 import json
 
 class Board:
@@ -20,6 +21,7 @@ class Visual:
     def __init__(self, board_file):
         self.board = Image.open(board_file)
         self.draw = ImageDraw.Draw(self.board)
+        self.window = tk.Tk()
 
     def draw_path(self, p1, p2, color):
         self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
@@ -35,7 +37,9 @@ class Visual:
         self.board = Image.open(board_file)
 
     def show(self):
-        self.board.show()
+        tkimage = ImageTk.PhotoImage(self.board)
+        tk.Label(self.window, image=tkimage).pack()
+        self.window.update()
 
 def load_files(city_db_path, board_path):
     """
@@ -61,17 +65,3 @@ def load_files(city_db_path, board_path):
     board = Board(board, min_x, max_x, min_y, max_y)
 
     return city_db, board
-
-def draw_line(point1, point2, rgbcode, boardfile=None):
-    draw = ImageDraw.Draw(boardfile)
-    draw.line([point1, point2], fill=rgbcode, width=LINE_THICKNESS)
-    return boardfile
-#paris is 2021, 1608
-
-def draw_ellipse(point, rgbcode, boardfile=Image.open(DEFAULT_BOARD_IMG_PATH)):
-    draw = ImageDraw.Draw(boardfile)
-    for i in range(RADIUS, RADIUS + CIRCLE_THICKNESS):
-        draw.ellipse((point[0] - i, point[1] - i, point[0] + (i - 1), point[1] + (i - 1)), outline=rgbcode)
-        draw.ellipse((point[0] - (i-1), point[1] - (i-1), point[0] + (i - 1), point[1] + (i - 1)), outline=rgbcode)
-        draw.ellipse((point[0] - i, point[1] - i, point[0] + i, point[1] + i), outline=rgbcode)
-    return boardfile
