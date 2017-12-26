@@ -3,7 +3,7 @@ from optparse import OptionParser
 
 DEFAULT_DB_PATH = "../database/eurorails.json"
 DEFAULT_BOARD_PATH = "../database/board_ascii.txt"
-DEFAULT_IMG_PATH = "../databaser/board.jpg"
+DEFAULT_IMG_PATH = "../database/board.jpg"
 
 def print_city(database, city):
     entry = database["cities"][city]
