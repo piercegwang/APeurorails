@@ -27,6 +27,7 @@ class Visual:
 
     def draw_path(self, p1, p2, color):
         self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
+        self.window.update()
 
     def mark_city(self, city_loc, color):
         for i in range(Visual.RADIUS, Visual.RADIUS + Visual.CIRCLE_THICKNESS):
@@ -34,9 +35,12 @@ class Visual:
             self.draw.ellipse((city_loc[0] - (i - 1), city_loc[1] - (i - 1), city_loc[0] + (i - 1), city_loc[1] + (i - 1)),
                          outline=rgbcode)
             self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + i, city_loc[1] + i), outline=color)
+            self.window.update()
 
     def clean(self):
         self.board = Image.open(self.filepath)
+        tkimage = ImageTk.PhotoImage(self.board)
+        self.window.update()
 
     def show(self):
         tkimage = ImageTk.PhotoImage(self.board)
