@@ -33,11 +33,12 @@ def print_path(path, cost, start_city=None):
 def handle_query(database, board, my_track, visual, query):
     tokenized = query.split(' ')
     output = ""
-    color = (random.randrange(0, 200), random.randrange(0, 200), random.randrange(0, 200))
+    color = (random.randrange(0, 150), random.randrange(0, 150), random.randrange(0, 150))
     
     # QUERY = clear board
     if tokenized[0] == "clean":
         visual.clean()
+        # TODO: redraw my track
         if len(tokenized) >= 2 and tokenized[1] == "all":
             my_track.clean()
 

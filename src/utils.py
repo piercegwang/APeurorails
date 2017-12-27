@@ -76,6 +76,35 @@ class Board:
             cost += get_travel_cost(p1_x, p1_y, dx, dy)
             return cost
 
+    def compute_point_cost(self, pt):
+
+        x, y = pt
+        
+        if not self.is_valid(x, y):
+            raise ValueError("Point", pt, "is not a valid point on the board")
+        else:
+            dest = self(x, y)
+
+            if dest == "." or dest == "L":
+                cost = 1
+            elif dest == "m":
+                cost = 2
+            elif dest == "a":
+                cost = 5
+            elif dest == "S" or dest == "M":
+                cost = 3
+            elif dest == "h":
+                other_harbor, cost = self.harbors[(x, y)]
+                if self(other_harbor[0], other_harbor[1]) == "H":
+                    cost += 3
+            elif dest == "H":
+                _, cost = self.harbors[(x, y)]
+                cost += 3
+            else:
+                raise ValueError("Board contains invalid character.")
+
+            return cost
+
 
 class BuiltTrack:
     def __init__(self, board):
@@ -266,14 +295,17 @@ def load_files(city_db_path, board_path, harbor_path):
 
     return city_db, board
 
-def find_path(p1, board, reached_goal):
-    def get_path(initial, point):
+def find_path(end_city, board, reached_goal):
+    """
+    Finds path from end city to some goal (e.g. start city, load, existing track).
+    """
+    def get_path(end, point):
         path = []
-        while point != initial:
+        while point != end:
             path.append(point.coord)
             point = point.parent
-        path.append(initial.coord)
-        return list(reversed(path))
+        path.append(end.coord)
+        return path
     
     def get_neighbors(point):
         neighbors = []
@@ -383,31 +415,23 @@ def find_path(p1, board, reached_goal):
         def __eq__(self, other):
             return other is not None and self.x == other.x and self.y == other.y
     
-    p1 = Point(p1)
+    end_city = Point(end_city, cost=board.compute_point_cost(end_city))
     visited = set()
-    agenda = LinkedList(p1)
+    agenda = LinkedList(end_city)
     while agenda.size() > 0:
         current_point, agenda = agenda.pop_min(value=Point.get_cost)
         if current_point not in visited:
             visited.add(current_point)
             if reached_goal((current_point.x, current_point.y)):
-                return get_path(p1, current_point), current_point.get_cost()
+                return get_path(end_city, current_point), current_point.get_cost()
             else:
                 neighbors = get_neighbors(current_point)
                 for n in neighbors:
                     if n not in visited:
+                        if reached_goal((n.x, n.y)):
+                            n.cost -= board.compute_point_cost((n.x, n.y))
                         agenda.append(n)
     
     return None, None
     # TODO: implement A* search
     # TODO: balance between cost and distance
-
-if __name__ == '__main__':
-    DEFAULT_DB_PATH = "../database/eurorails.json"
-    DEFAULT_BOARD_PATH = "../database/board_ascii.txt"
-    DEFAULT_HARBOR_PATH = "../database/harbors.txt"
-    
-    db, board = load_files(DEFAULT_DB_PATH, DEFAULT_BOARD_PATH, DEFAULT_HARBOR_PATH)
-    path = find_path((-21, 17), (12, -13), board)
-    # path = find_path((0, 0), (1, 1), board)
-    print(path)
