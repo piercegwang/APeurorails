@@ -165,7 +165,7 @@ class Visual:
             
         pixel[0] += round(Visual.X_CONST[0] * (delta[0] + 0.5 * delta[1])) + round(Visual.X_CONST[1] * delta[1])
         pixel[1] -= round(Visual.Y_CONST[1] * delta[1])
-        print(ref, pixel)
+        # print(ref, pixel)
         return tuple(pixel)
 
 def load_files(city_db_path, board_path, harbor_path):
@@ -180,6 +180,12 @@ def load_files(city_db_path, board_path, harbor_path):
     harbors = {}
     with open(city_db_path, 'r') as f:
         city_db = json.load(f)
+
+    city_db["points"] = {}
+    
+    for city in city_db["cities"]:
+        city_db["cities"][city]["coords"] = tuple(city_db["cities"][city]["coords"])
+        city_db["points"][city_db["cities"][city]["coords"]] = city
 
     board_raw = open(board_path).read().split('\n')
     min_x, max_x = map(int, board_raw[0].split(' '))
@@ -200,7 +206,7 @@ def load_files(city_db_path, board_path, harbor_path):
 
     return city_db, board
 
-def find_path(p1, p2, board):
+def find_path(p1, board, reached_goal):
     def get_path(initial, point):
         path = []
         while point != initial:
@@ -318,14 +324,13 @@ def find_path(p1, p2, board):
             return other is not None and self.x == other.x and self.y == other.y
     
     p1 = Point(p1)
-    p2 = Point(p2)
     visited = set()
     agenda = LinkedList(p1)
     while agenda.size() > 0:
         current_point, agenda = agenda.pop_min(value=Point.get_cost)
         if current_point not in visited:
             visited.add(current_point)
-            if current_point == p2:
+            if reached_goal((current_point.x, current_point.y)):
                 return get_path(p1, current_point), current_point.get_cost()
             else:
                 neighbors = get_neighbors(current_point)

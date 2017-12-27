@@ -58,7 +58,7 @@ def handle_query(database, board, visual, query):
         
         city_loc_1 = database["cities"][start_city]["coords"]
         city_loc_2 = database["cities"][end_city]["coords"]
-        path, cost = find_path(city_loc_1, city_loc_2, board)
+        path, cost = find_path(city_loc_1, board, lambda p: p == city_loc_2)
         output += "Optimal Cost Path: cost " + str(cost) + ", length" + str(len(path))
         # for pt in path:
         #     output += str(pt) + " "
@@ -66,28 +66,45 @@ def handle_query(database, board, visual, query):
         visual.draw_path(path, 0)
 
     # QUERY = destination city and load
-    elif len(tokenized) == 2 and tokenized[0] in database["cities"] and tokenized[1] in database["loads"]:
+    elif len(tokenized) >= 2 and tokenized[0] in database["cities"] and tokenized[1] in database["loads"]:
         end_city = tokenized[0]
         start_cities = database["loads"][tokenized[1]]
+        if len(tokenized) >= 3:
+            mode = tokenized[2]
+        else:
+            mode = "all"
         output = ""
 
-        for sc in start_cities:
-            visual.mark_city(database["cities"][sc]["coords"], 0)
-            output += print_city(database, sc) + "\n    "
-        visual.mark_city(database["cities"][end_city]["coords"], "red")
-        output += print_city(database, end_city) + "\n    "
+        if mode == "best":
+            load_city_locs = [database["cities"][sc]["coords"] for sc in start_cities]
+            end_city_loc = database["cities"][end_city]["coords"]
+            path, cost = find_path(end_city_loc, board, lambda p: p in load_city_locs)
+            best_load_city = database["points"][path[-1]]
 
-        i = 1
-        for sc in start_cities:
-            city_loc_1 = database["cities"][sc]["coords"]
-            city_loc_2 = database["cities"][end_city]["coords"]
-            path, cost = find_path(city_loc_1, city_loc_2, board)
-            output += "Optimal Cost Path " + str(i) + ": " + sc + ", cost " + str(cost) + ", length " + str(len(path))
-            # for pt in path:
-            #     output += str(pt) + " "
+            visual.mark_city(database["cities"][best_load_city]["coords"], "black")
+            output += print_city(database, best_load_city) + "\n    "
+            visual.mark_city(database["cities"][end_city]["coords"], "black")
+            output += print_city(database, end_city) + "\n    "
+            
+            output += "Optimal Cost Path: " + best_load_city + ", cost " + str(cost) + ", length " + str(len(path))
             output += "\n    "
-            i += 1
             visual.draw_path(path, 0)
+        else:
+            i = 1
+            for sc in start_cities:
+                visual.mark_city(database["cities"][sc]["coords"], "black")
+                output += print_city(database, sc) + "\n    "
+            visual.mark_city(database["cities"][end_city]["coords"], "black")
+            output += print_city(database, end_city) + "\n    "
+            
+            for sc in start_cities:
+                city_loc_1 = database["cities"][sc]["coords"]
+                city_loc_2 = database["cities"][end_city]["coords"]
+                path, cost = find_path(city_loc_1, board, lambda p: p == city_loc_2)
+                output += "Optimal Cost Path " + str(i) + ": " + sc + ", cost " + str(cost) + ", length " + str(len(path))
+                output += "\n    "
+                i += 1
+                visual.draw_path(path, 0)
         
     elif len(query.strip()) > 0:
         raise ValueError("Query could not be processed.")
