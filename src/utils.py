@@ -25,17 +25,18 @@ class Visual:
         self.board = self.board.resize((4096//4, 3281//4), Image.ANTIALIAS)
         self.draw = ImageDraw.Draw(self.board)
         self.window = tk.Tk()
+        self.canvas = tk.Canvas(self.window, width=4096//4, height=3281//4)
+        self.canvas.pack()
         self.show()
 
-    def draw_path(self, p1, p2, color):
-        self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
+    def draw_path(self, p1, p2, color=0):
+        print("test")
+        i = self.canvas.create_line(0, 820, 1024, 0, fill="black")
 
-    def mark_city(self, city_loc, color):
-        for i in range(Visual.RADIUS, Visual.RADIUS + Visual.CIRCLE_THICKNESS):
-            self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + (i - 1), city_loc[1] + (i - 1)), outline=color)
-            self.draw.ellipse((city_loc[0] - (i - 1), city_loc[1] - (i - 1), city_loc[0] + (i - 1), city_loc[1] + (i - 1)),
-                         outline=color)
-            self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + i, city_loc[1] + i), outline=color)
+
+    def mark_city(self, city_loc, color=0):
+        #self.canvas.create_oval(x0, y0, x1, y1, option, ...)
+        pass
 
     def clean(self):
         self.board = Image.open(self.filepath)

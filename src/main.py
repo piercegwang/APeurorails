@@ -40,7 +40,7 @@ def handle_query(database, visual, query):
         return output
 
     else:
-        visual.mark_city((0,0), (0, 0, 0, 200))
+        visual.draw_path((0, 0), (100, 100))
         raise ValueError("Query could not be processed.")
 
 if __name__ == '__main__':
