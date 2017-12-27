@@ -1,6 +1,5 @@
 from PIL import Image, ImageDraw, ImageTk
 import tkinter as tk
-import random
 import json
 
 class Board:
@@ -76,6 +75,64 @@ class Board:
             
             cost += get_travel_cost(p1_x, p1_y, dx, dy)
             return cost
+
+
+class BuiltTrack:
+    def __init__(self, board):
+        self.min_x = board.min_x
+        self.max_x = board.max_x
+        self.min_y = board.min_y
+        self.max_y = board.max_y
+        self.board = [[0 for _ in range(2 * (abs(self.min_x) + abs(self.max_x) + 1))] for _ in range(2 * (abs(self.min_y) + abs(self.max_y) + 1))]
+        self.queued_track = []
+        self.has_track = False
+
+    def claim_point(self, x, y):
+        x_index = 2 * (x - self.min_x)
+        y_index = 2 * (self.max_y - y)
+        if 0 <= x_index < len(self.board[0]) and 0 <= y_index < len(self.board):
+            self.board[y_index][x_index] = 1
+        self.has_track = True
+
+    def claim_track(self, x, y, dx, dy):
+        x_index = 2 * (x - self.min_x) + dx
+        y_index = 2 * (self.max_y - y) - dy
+        if 0 <= x_index < len(self.board[0]) and 0 <= y_index < len(self.board):
+            self.board[y_index][x_index] = 1
+
+    def add_track(self, sequence):
+        for i in range(len(sequence)):
+            x, y = sequence[i]
+            self.claim_point(x, y)
+            if i < len(sequence) - 1:
+                dx = sequence[i + 1][0] - x
+                dy = sequence[i + 1][1] - y
+                if (dx, dy) in ((1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1)):
+                    self.claim_track(x, y, dx, dy)
+
+    def __contains__(self, pt):
+        x_index = 2 * (pt[0] - self.min_x)
+        y_index = 2 * (self.max_y - pt[1])
+        if 0 <= x_index < len(self.board[0]) and 0 <= y_index < len(self.board):
+            return self.board[y_index][x_index]
+
+    def clean(self):
+        for r in range(len(self.board)):
+            for c in range(len(self.board[r])):
+                self.board[r][c] = 0
+        self.empty_queued_track()
+        self.has_track = False
+    
+    def queue_track(self, path):
+        self.queued_track.append(path)
+    
+    def save_queued_track(self):
+        for path in self.queued_track:
+            self.add_track(path)
+        self.empty_queued_track()
+    
+    def empty_queued_track(self):
+        self.queued_track = []
 
 class Visual:
     LINE_THICKNESS = 2
