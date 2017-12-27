@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageTk
 import tkinter as tk
+import random
 import json
 
 class Board:
@@ -117,13 +118,14 @@ class Visual:
         self.panel = tk.Label(self.window, image=self.tk_img)
         self.panel.pack(side="bottom", fill="both", expand="yes")
 
-    def draw_path(self, points, color="black"):
+    def draw_path(self, points, color=0):
         for i in range(len(points) - 1):
             p1 = points[i]
             p2 = points[i + 1]
             p1 = self.coordinates_to_pixels(p1)
             p2 = self.coordinates_to_pixels(p2)
             self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
+                
 
     def mark_city(self, city_loc, color=0):
         city_loc = self.coordinates_to_pixels(city_loc)

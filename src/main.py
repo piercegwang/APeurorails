@@ -25,6 +25,7 @@ def print_city(database, city):
 def handle_query(database, board, visual, query):
     tokenized = query.split(' ')
     output = None
+    color = (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))
     
     # QUERY = clear board
     if tokenized[0] == "clean":
@@ -33,7 +34,7 @@ def handle_query(database, board, visual, query):
     # QUERY = city
     elif len(tokenized) == 1 and tokenized[0] in database["cities"]:
         output = ""
-        visual.mark_city(database["cities"][tokenized[0]]["coords"], 0)
+        visual.mark_city(database["cities"][tokenized[0]]["coords"], color)
         output += print_city(database, tokenized[0])
         output += "\n    "
 
@@ -42,7 +43,7 @@ def handle_query(database, board, visual, query):
         entry = database["loads"][tokenized[0]]
         output = ""
         for city in entry:
-            visual.mark_city(database["cities"][city]["coords"], 0)
+            visual.mark_city(database["cities"][city]["coords"], color)
             output += print_city(database, city) + "\n    "
 
     # QUERY = two cities
@@ -51,8 +52,8 @@ def handle_query(database, board, visual, query):
         end_city = tokenized[1]
         output = ""
 
-        visual.mark_city(database["cities"][start_city]["coords"], 0)
-        visual.mark_city(database["cities"][end_city]["coords"], 0)
+        visual.mark_city(database["cities"][start_city]["coords"], color)
+        visual.mark_city(database["cities"][end_city]["coords"], color)
         output += print_city(database, start_city) + "\n    "
         output += print_city(database, end_city) + "\n    "
         
@@ -63,7 +64,7 @@ def handle_query(database, board, visual, query):
         # for pt in path:
         #     output += str(pt) + " "
         output += "\n    "
-        visual.draw_path(path, 0)
+        visual.draw_path(path, color)
 
     # QUERY = destination city and load
     elif len(tokenized) >= 2 and tokenized[0] in database["cities"] and tokenized[1] in database["loads"]:
