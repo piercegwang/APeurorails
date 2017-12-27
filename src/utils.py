@@ -21,7 +21,7 @@ class Visual:
 
     def __init__(self, board_file):
         self.filepath = board_file
-        self.board = Image.open(board_file)
+        self.board = Image.open(self.filepath)
         self.board = self.board.resize((4096//4, 3281//4), Image.ANTIALIAS)
         self.draw = ImageDraw.Draw(self.board)
         self.window = tk.Tk()
@@ -29,7 +29,6 @@ class Visual:
 
     def draw_path(self, p1, p2, color):
         self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
-        self.window.update()
 
     def mark_city(self, city_loc, color):
         for i in range(Visual.RADIUS, Visual.RADIUS + Visual.CIRCLE_THICKNESS):
@@ -37,7 +36,6 @@ class Visual:
             self.draw.ellipse((city_loc[0] - (i - 1), city_loc[1] - (i - 1), city_loc[0] + (i - 1), city_loc[1] + (i - 1)),
                          outline=color)
             self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + i, city_loc[1] + i), outline=color)
-            self.window.update()
 
     def clean(self):
         self.board = Image.open(self.filepath)
@@ -46,7 +44,7 @@ class Visual:
         self.window.update()
 
     def show(self):
-        self.tkimage = ImageTk.PhotoImage(self.draw)
+        self.tkimage = ImageTk.PhotoImage(self.board)
         tk.Label(self.window, image=self.tkimage).pack()
         self.window.update()
 
@@ -55,8 +53,6 @@ class Visual:
 
     def quit(self):
         self.window.quit()
-
-
 
 
 
