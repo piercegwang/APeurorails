@@ -138,6 +138,7 @@ class Visual:
     def clean(self):
         self.board = Image.open(self.filepath)
         self.board = self.board.resize((4096//4, 3281//4), Image.ANTIALIAS)
+        self.draw = ImageDraw.Draw(self.board)
 
     def update(self):
         self.tk_img = ImageTk.PhotoImage(self.board)

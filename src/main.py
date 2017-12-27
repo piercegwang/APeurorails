@@ -59,7 +59,7 @@ def handle_query(database, board, visual, query):
         city_loc_1 = database["cities"][start_city]["coords"]
         city_loc_2 = database["cities"][end_city]["coords"]
         path, cost = find_path(city_loc_1, board, lambda p: p == city_loc_2)
-        output += "Optimal Cost Path: cost " + str(cost) + ", length" + str(len(path))
+        output += "Optimal Cost Path: cost " + str(cost) + ", length " + str(len(path))
         # for pt in path:
         #     output += str(pt) + " "
         output += "\n    "
