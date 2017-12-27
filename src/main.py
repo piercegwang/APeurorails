@@ -24,7 +24,8 @@ def print_city(database, city):
 def handle_query(database, visual, query):
     # QUERY = clear board
     if query == "clear":
-        pass
+        visual.clear()
+        return "string string string string board cleared string string"
 
     # QUERY = city
     elif query in database["cities"]:
@@ -37,7 +38,9 @@ def handle_query(database, visual, query):
         for city in entry:
             output += print_city(database, city) + "\n    "
         return output
+
     else:
+        visual.mark_city((100, 100), (0, 0, 0, 0))
         raise ValueError("Query could not be processed.")
 
 if __name__ == '__main__':
@@ -51,8 +54,10 @@ if __name__ == '__main__':
 
     i = 1
     while True:
+        visual.update()
         raw_expression = input(str(i) + ": ")
         if raw_expression == "exit":
+            visual.quit()
             break
         else:
             try:
