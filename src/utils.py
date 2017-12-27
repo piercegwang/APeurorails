@@ -86,9 +86,14 @@ class Visual:
         self.panel.pack(side="bottom", fill="both", expand="yes")
 
     def draw_path(self, p1, p2, color="black"):
+        p1 = self.CtoP(p1)
+        p2 = self.CtoP(p2)
         self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
+        print(self.board.size)
 
     def mark_city(self, city_loc, color=0):
+        city_loc = self.CtoP(city_loc)
+        print(city_loc)
         for i in range(Visual.RADIUS, Visual.RADIUS + Visual.CIRCLE_THICKNESS):
             self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + (i - 1), city_loc[1] + (i - 1)),
                               outline=color)
@@ -96,6 +101,8 @@ class Visual:
                               outline = color)
             self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + i, city_loc[1] + i),
                               outline=color)
+
+
 
     def clean(self):
         self.board = Image.open(self.filepath)
@@ -108,6 +115,23 @@ class Visual:
 
     def quit(self):
         self.window.quit()
+        
+    def CtoP(self, coords):  #Coords to pixels
+        origin = [505, 402]
+        xshift = 16.21
+        yshift = [8.11, 14.03]
+        pixel = origin
+        if coords[0] == 0: #x shifts
+            pass
+        elif coords[0] != 0:
+            pixel[0] += int(xshift * coords[0])
+
+        if coords[1] == 0: #y shifts
+            pass
+        elif coords[1] != 0:
+            pixel[0] += int(yshift[0] * coords[1])
+            pixel[1] -= int(yshift[1] * coords[1])
+        return tuple(pixel)
 
 def load_files(city_db_path, board_path):
     """

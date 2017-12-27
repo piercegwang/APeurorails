@@ -29,6 +29,7 @@ def handle_query(database, visual, query):
 
     # QUERY = city
     elif query in database["cities"]:
+        visual.mark_city(database["cities"][query]["coords"], 0)
         return print_city(database, query)
 
     # QUERY = load
