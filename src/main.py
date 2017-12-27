@@ -38,9 +38,11 @@ def handle_query(database, board, my_track, visual, query):
     # QUERY = clear board
     if tokenized[0] == "clean":
         visual.clean()
-        # TODO: redraw my track
         if len(tokenized) >= 2 and tokenized[1] == "all":
             my_track.clean()
+        else:
+            for track in my_track.get_edges():
+                visual.draw_path(track, color)
 
     elif tokenized[0] == "save":
         my_track.save_queued_track()
@@ -106,7 +108,7 @@ def handle_query(database, board, my_track, visual, query):
                     output += print_city(database, sc)
                 visual.mark_city(database["cities"][end_city]["coords"], color)
                 output += print_city(database, end_city)
-                
+
                 for sc in start_cities:
                     start_city_loc = database["cities"][sc]["coords"]
                     end_city_loc = database["cities"][end_city]["coords"]
@@ -141,13 +143,24 @@ def handle_query(database, board, my_track, visual, query):
                         visual.mark_city(database["cities"][sc]["coords"], color)
                         output += print_city(database, sc)
     
+                    opt_path = None
+                    opt_cost = None
+                    opt_city = None
                     for sc in load_cities:
                         load_city_loc = database["cities"][sc]["coords"]
     
                         path, cost = find_path(load_city_loc, board, lambda p: p in my_track)
-                        my_track.queue_track(path)
-                        visual.draw_path(path, color)
+                        
+                        if opt_cost is None or cost < opt_cost or (cost == opt_cost and len(path) < len(opt_path)):
+                            opt_path = path
+                            opt_cost = cost
+                            opt_city = sc
+                            
                         output += print_path(path, cost, sc)
+                        
+                    output += "Best: " + opt_city + "\n    "
+                    my_track.queue_track(opt_path)
+                    visual.draw_path(opt_path, color)
             
             if tokenized[0] == "add*":
                 my_track.save_queued_track()
@@ -186,5 +199,5 @@ if __name__ == '__main__':
             except Exception as error:
                 # import traceback
                 # traceback.print_exc()
-                print("  > ERROR:", repr(error))
+                print("  > ERROR:", str(error))
         i += 1

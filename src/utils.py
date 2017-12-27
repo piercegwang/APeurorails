@@ -140,10 +140,18 @@ class BuiltTrack:
                     self.claim_track(x, y, dx, dy)
 
     def __contains__(self, pt):
-        x_index = 2 * (pt[0] - self.min_x)
-        y_index = 2 * (self.max_y - pt[1])
-        if 0 <= x_index < len(self.board[0]) and 0 <= y_index < len(self.board):
-            return self.board[y_index][x_index]
+        if len(pt) == 2:
+            x_index = 2 * (pt[0] - self.min_x)
+            y_index = 2 * (self.max_y - pt[1])
+            if 0 <= x_index < len(self.board[0]) and 0 <= y_index < len(self.board):
+                return self.board[y_index][x_index]
+        elif len(pt) == 4:
+            x_index = 2 * (pt[0] - self.min_x) + pt[2]
+            y_index = 2 * (self.max_y - pt[1]) - pt[3]
+            if 0 <= x_index < len(self.board[0]) and 0 <= y_index < len(self.board):
+                return self.board[y_index][x_index]
+        else:
+            return False
 
     def clean(self):
         for r in range(len(self.board)):
@@ -162,6 +170,13 @@ class BuiltTrack:
     
     def empty_queued_track(self):
         self.queued_track = []
+    
+    def get_edges(self):
+        for x in range(self.min_x, self.max_x + 1):
+            for y in range(self.min_y, self.max_y + 1):
+                for dx, dy in ((1, 0), (0, -1), (1, -1)):
+                    if (x, y, dx, dy) in self:
+                        yield [(x, y), (x + dx, y + dy)]
 
 class Visual:
     LINE_THICKNESS = 2

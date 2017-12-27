@@ -339,14 +339,14 @@
     ,
     "sevilla":
       { "coords": [-14,-25],
-        "loads": ["oranges", "cork"],
+        "loads": ["oranges", "cork_load"],
         "island": "mainland",
         "type": "small"
       }
     ,
     "lisboa":
       { "coords": [-21,-17],
-        "loads": ["cork"],
+        "loads": ["cork_load"],
         "island": "mainland",
         "type": "medium"
       }
@@ -491,7 +491,7 @@
     ],
     "sheep": [
       "bilbao",
-      "cork",
+      "cork_load",
       "glasgow"
     ],
     "ham": [
