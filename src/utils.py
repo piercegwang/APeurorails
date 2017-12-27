@@ -15,7 +15,7 @@ class Board:
 
 class Visual:
     DEFAULT_BOARD_IMG_PATH = "../database/board.jpg"
-    LINE_THICKNESS = 14
+    LINE_THICKNESS = 10
     CIRCLE_THICKNESS = 100
     RADIUS = 64
 
@@ -24,32 +24,32 @@ class Visual:
         self.board = Image.open(self.filepath)
         self.board = self.board.resize((4096//4, 3281//4), Image.ANTIALIAS)
         self.draw = ImageDraw.Draw(self.board)
+
+        # Create tkinter window
         self.window = tk.Tk()
-        self.canvas = tk.Canvas(self.window, width=4096//4, height=3281//4)
-        self.canvas.pack()
-        self.show()
+        self.tk_img = ImageTk.PhotoImage(self.board)
+        self.panel = tk.Label(self.window, image=self.tk_img)
+        self.panel.pack(side="bottom", fill="both", expand="yes")
 
-    def draw_path(self, p1, p2, color=0):
-        print("test")
-        i = self.canvas.create_line(0, 820, 1024, 0, fill="black")
-
+    def draw_path(self, p1, p2, color="black"):
+        self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
 
     def mark_city(self, city_loc, color=0):
-        #self.canvas.create_oval(x0, y0, x1, y1, option, ...)
-        pass
+        for i in range(Visual.RADIUS, Visual.RADIUS + Visual.CIRCLE_THICKNESS):
+            self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + (i - 1), city_loc[1] + (i - 1)),
+                              outline=color)
+            self.draw.ellipse((city_loc[0] - (i - 1), city_loc[1] - (i - 1), city_loc[0] + (i - 1), city_loc[1] + (i - 1)),
+                              outline = color)
+            self.draw.ellipse((city_loc[0] - i, city_loc[1] - i, city_loc[0] + i, city_loc[1] + i),
+                              outline=color)
 
     def clean(self):
         self.board = Image.open(self.filepath)
         self.board = self.board.resize((4096//4, 3281//4), Image.ANTIALIAS)
-        tkimage = ImageTk.PhotoImage(self.board)
-        self.window.update()
-
-    def show(self):
-        self.tkimage = ImageTk.PhotoImage(self.board)
-        tk.Label(self.window, image=self.tkimage).pack()
-        self.window.update()
 
     def update(self):
+        self.tk_img = ImageTk.PhotoImage(self.board)
+        self.panel.configure(image=self.tk_img)
         self.window.update()
 
     def quit(self):
