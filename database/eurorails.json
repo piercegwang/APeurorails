@@ -58,14 +58,14 @@
       }
     ,
     "zurich":
-      { "coords": [5,-8],
+      { "coords": [13,-8],
         "loads": ["chocolate"],
         "island": "mainland",
         "type": "small"
       }
     ,
     "lyon":
-      { "coords": [-4,-10],
+      { "coords": [6,-10],
         "loads": ["wheat"],
         "island": "mainland",
         "type": "small"
@@ -79,14 +79,14 @@
       }
     ,
     "torino":
-      { "coords": [-1,-13],
+      { "coords": [12,-13],
         "loads": ["cars"],
         "island": "mainland",
         "type": "small"
       }
     ,
     "marseille":
-      { "coords": [-8,-17],
+      { "coords": [9,-17],
         "loads": ["bauxite"],
         "island": "mainland",
         "type": "medium"
@@ -212,7 +212,7 @@
       }
     ,
     "leipzig":
-      { "coords": [17,5],
+      { "coords": [16,2],
         "loads": ["china"],
         "island": "mainland",
         "type": "small"
@@ -261,14 +261,14 @@
       }
     ,
     "antwerpen":
-      { "coords": [2,4],
+      { "coords": [2, 5],
         "loads": ["imports"],
         "island": "mainland",
         "type": "medium"
       }
     ,
     "bruxelles":
-      { "coords": [2,3],
+      { "coords": [2, 4],
         "loads": ["chocolate"],
         "island": "mainland",
         "type": "medium"
@@ -296,7 +296,7 @@
       }
     ,
     "stockholm":
-      { "coords": [10,20],
+      { "coords": [17,24],
         "loads": ["wood", "iron"],
         "island": "sweden",
         "type": "medium"
@@ -422,136 +422,136 @@
       }
   },
   "loads": {
-    "bauxite":
-      [ "budapest",
-        "marseille"
-      ],
-    "copper":
-      [ "beograd",
-        "wroclaw"
-      ],
-    "oil":
-      [ "aberdeen",
-        "beograd",
-        "newcastle",
-        "oslo"
-      ],
-    "beer":
-      [ "dublin",
-        "frankfurt",
-        "munchen",
-        "praha"
-      ],
-    "cork":
-      [ "lisboa",
-        "sevilla"
-      ],
-    "oranges":
-      [ "sevilla",
-        "valencia"
-      ],
-    "cars":
-      [ "manchester",
-        "munchen",
-        "stuttgart",
-        "torino"
-      ],
-    "fish":
-      [ "aberdeen",
-        "oslo",
-        "porto"
-      ],
-    "potatoes":
-      [ "belfast",
-        "lodz",
-        "szczecin"
-      ],
-    "cattle":
-      [ "bern",
-        "nantes"
-      ],
-    "flowers":
-      [ "holland"
-      ],
-    "sheep":
-      [ "bilbao",
-        "cork",
-        "glasgow"
-      ],
-    "ham":
-      [ "warszawa"
-      ],
-    "cheese":
-      [ "arhus",
-        "bern",
-        "holland",
-        "kobenhavn"
-      ],
-    "hops":
-      [ "cardiff"
-      ],
-    "steel":
-      [ "birmingham",
-        "luxembourg",
-        "ruhr"
-      ],
-    "china":
-      [ "birmingham",
-        "leipzig"
-      ],
-    "imports":
-      [ "antwerpen",
-        "hamburg"
-      ],
-    "tobacco":
-      [ "napoli"
-      ],
-    "chocolate":
-      [ "bruxelles",
-        "zurich"
-      ],
-    "iron":
-      [ "birmingham",
-        "kaliningrad",
-        "stockholm"
-      ],
-    "tourists":
-      [ "london",
-        "ruhr"
-      ],
-    "coal":
-      [ "cardiff",
-        "krakow",
-        "wroclaw"
-      ],
-    "labor":
-      [ "beograd",
-        "sarajevo",
-        "zagreb"
-      ],
-    "wheat":
-      [ "lyon",
-        "toulouse"
-      ],
-    "machinery":
-      [ "barcelona",
-        "bremen",
-        "goteburg",
-        "nantes"
-      ],
-    "wine":
-      [ "bordeaux",
-        "frankfurt",
-        "porto",
-        "wein"
-      ],
-    "marble":
-      [ "firenze"
-      ],
-    "wood":
-      [ "oslo",
-        "sarajevo",
-        "stockholm"
-      ]
+    "bauxite": [
+      "budapest",
+      "marseille"
+    ],
+    "copper": [
+      "beograd",
+      "wroclaw"
+    ],
+    "oil": [
+      "aberdeen",
+      "beograd",
+      "newcastle",
+      "oslo"
+    ],
+    "beer": [
+      "dublin",
+      "frankfurt",
+      "munchen",
+      "praha"
+    ],
+    "cork": [
+      "lisboa",
+      "sevilla"
+    ],
+    "oranges": [
+      "sevilla",
+      "valencia"
+    ],
+    "cars": [
+      "manchester",
+      "munchen",
+      "stuttgart",
+      "torino"
+    ],
+    "fish": [
+      "aberdeen",
+      "oslo",
+      "porto"
+    ],
+    "potatoes": [
+      "belfast",
+      "lodz",
+      "szczecin"
+    ],
+    "cattle": [
+      "bern",
+      "nantes"
+    ],
+    "flowers": [
+      "holland"
+    ],
+    "sheep": [
+      "bilbao",
+      "cork",
+      "glasgow"
+    ],
+    "ham": [
+      "warszawa"
+    ],
+    "cheese": [
+      "arhus",
+      "bern",
+      "holland",
+      "kobenhavn"
+    ],
+    "hops": [
+      "cardiff"
+    ],
+    "steel": [
+      "birmingham",
+      "luxembourg",
+      "ruhr"
+    ],
+    "china": [
+      "birmingham",
+      "leipzig"
+    ],
+    "imports": [
+      "antwerpen",
+      "hamburg"
+    ],
+    "tobacco": [
+      "napoli"
+    ],
+    "chocolate": [
+      "bruxelles",
+      "zurich"
+    ],
+    "iron": [
+      "birmingham",
+      "kaliningrad",
+      "stockholm"
+    ],
+    "tourists": [
+      "london",
+      "ruhr"
+    ],
+    "coal": [
+      "cardiff",
+      "krakow",
+      "wroclaw"
+    ],
+    "labor": [
+      "beograd",
+      "sarajevo",
+      "zagreb"
+    ],
+    "wheat": [
+      "lyon",
+      "toulouse"
+    ],
+    "machinery": [
+      "barcelona",
+      "bremen",
+      "goteborg",
+      "nantes"
+    ],
+    "wine": [
+      "bordeaux",
+      "frankfurt",
+      "porto",
+      "wien"
+    ],
+    "marble": [
+      "firenze"
+    ],
+    "wood": [
+      "oslo",
+      "sarajevo",
+      "stockholm"
+    ]
   }
 }
