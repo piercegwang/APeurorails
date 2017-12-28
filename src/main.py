@@ -1,4 +1,7 @@
 from utils import *
+from mytrack import *
+from visual import *
+from board import *
 from optparse import OptionParser
 import random
 
@@ -43,7 +46,7 @@ def handle_query(database, board, my_track, visual, query):
         if len(tokenized) >= 2 and tokenized[1] == "all":
             my_track.clean()
         else:
-            for track in my_track.get_edges():
+            for track in my_track:
                 visual.draw_path(track, color)
 
     elif keyword == "save":
@@ -84,7 +87,7 @@ def handle_query(database, board, my_track, visual, query):
                 output += print_city(database, end_city)
                 
                 path, cost = find_path(start_city_loc, board, lambda p: p == end_city_loc)
-                my_track.queue_track(path)
+                my_track.append_to_queue(path)
                 output += print_path(path, cost)
                 visual.draw_path(path, color)
                 
@@ -108,7 +111,7 @@ def handle_query(database, board, my_track, visual, query):
                     load_city_locs = [database["cities"][sc]["coords"] for sc in start_cities]
                     end_city_loc = database["cities"][end_city]["coords"]
                     path, cost = find_path(end_city_loc, board, lambda p: p in load_city_locs)
-                    my_track.queue_track(path)
+                    my_track.append_to_queue(path)
                     best_load_city = database["points"][path[-1]]
         
                     visual.mark_city(database["cities"][best_load_city]["coords"], color)
@@ -131,7 +134,7 @@ def handle_query(database, board, my_track, visual, query):
                         end_city_loc = database["cities"][end_city]["coords"]
                         
                         path, cost = find_path(start_city_loc, board, lambda p: p == end_city_loc)
-                        my_track.queue_track(path)
+                        my_track.append_to_queue(path)
                         output += print_path(path, cost, sc)
                         visual.draw_path(path, color)
             
@@ -153,7 +156,7 @@ def handle_query(database, board, my_track, visual, query):
                     visual.mark_city(city_loc, color)
                     output += print_city(database, city)
                     path, cost = find_path(city_loc, board, lambda p: p == p in my_track)
-                    my_track.queue_track(path)
+                    my_track.append_to_queue(path)
                     
                     visual.draw_path(path, color)
                     output += "Optimal Cost Path: cost " + str(cost) + ", length " + str(len(path))
@@ -188,7 +191,7 @@ def handle_query(database, board, my_track, visual, query):
                         output += print_path(path, cost, sc)
         
                     output += "Best: " + opt_city + "\n    "
-                    my_track.queue_track(opt_path)
+                    my_track.append_to_queue(opt_path)
                     visual.draw_path(opt_path, color)
         
         elif keyword == "draw" or keyword == "draw*":
@@ -231,7 +234,7 @@ if __name__ == '__main__':
 
     database, board = load_files(opts.db_path, opts.board_path, opts.harbor_path)
     visual = Visual(DEFAULT_IMG_PATH)
-    my_track = BuiltTrack(board)
+    my_track = MyTrack(board)
 
     i = 1
     while True:
