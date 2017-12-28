@@ -1,0 +1,9 @@
+cherbourg -8 5 plymouth -13 9 4
+lehavre -5 4 portsmouth -8 8 4
+calais -2 6 dover -3 7 4
+ljmuiden 1 10 harwich -3 10 4
+esbjerg 5 17 newcastle -9 19 16
+liverpool -11 16 dublin -18 19 8
+stranraer -16 22 belfast -17 22 4
+sassnitz 15 11 malmo 13 14 8
+hirtshais 6 21 kristiansand 4 24 8
