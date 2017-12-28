@@ -191,6 +191,28 @@ def handle_query(database, board, my_track, visual, query):
                     my_track.queue_track(opt_path)
                     visual.draw_path(opt_path, color)
         
+        elif keyword == "draw" or keyword == "draw*":
+            path = []
+            for loc in tokenized:
+                if loc in database["cities"]: # city
+                    path.append(database["cities"][loc]["coords"])
+                elif type(loc) == tuple and len(loc) == 2: # loc
+                    path.append(loc)
+                elif len(path) >= 1:
+                    if loc == "r":
+                        path.append((path[-1][0] + 1, path[-1][1]))
+                    elif loc == "l":
+                        path.append((path[-1][0] - 1, path[-1][1]))
+                    elif loc == "ur":
+                        path.append((path[-1][0], path[-1][1] + 1))
+                    elif loc == "ul":
+                        path.append((path[-1][0] - 1, path[-1][1] + 1))
+                    elif loc == "dl":
+                        path.append((path[-1][0], path[-1][1] - 1))
+                    elif loc == "dr":
+                        path.append((path[-1][0] + 1, path[-1][1] - 1))
+            visual.draw_path(path, color)
+        
         elif len(query.strip()) > 0:
             raise ValueError("Query could not be processed.")
 
@@ -226,7 +248,7 @@ if __name__ == '__main__':
                 if len(output) > 0:
                     print("  >", output)
             except Exception as error:
-                # import traceback
-                # traceback.print_exc()
+                import traceback
+                traceback.print_exc()
                 print("  > ERROR:", str(error))
         i += 1

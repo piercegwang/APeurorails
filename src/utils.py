@@ -2,6 +2,9 @@ from PIL import Image, ImageDraw, ImageTk
 import tkinter as tk
 import json
 
+def is_one_step(dx, dy):
+    return (dx, dy) in ((1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1))
+
 class Board:
     def __init__(self, board, harbors, min_x, max_x, min_y, max_y):
         self.min_x = min_x
@@ -50,7 +53,7 @@ class Board:
             raise ValueError("Point 1 is not a valid point on the board")
         elif not self.is_valid(p2_x, p2_y):
             raise ValueError("Point 2 is not a valid point on the board")
-        elif (dx, dy) not in ((1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1)):
+        elif not is_one_step(dx, dy):
             raise ValueError("board.compute_cost() called on non-adjacent points.")    
         else:
             dest = self(p2_x, p2_y)
@@ -136,7 +139,7 @@ class BuiltTrack:
             if i < len(sequence) - 1:
                 dx = sequence[i + 1][0] - x
                 dy = sequence[i + 1][1] - y
-                if (dx, dy) in ((1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1)):
+                if is_one_step(dx, dy):
                     self.claim_track(x, y, dx, dy)
 
     def __contains__(self, pt):
@@ -223,9 +226,10 @@ class Visual:
         for i in range(len(points) - 1):
             p1 = points[i]
             p2 = points[i + 1]
-            p1 = self.coordinates_to_pixels(p1)
-            p2 = self.coordinates_to_pixels(p2)
-            self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
+            if is_one_step(p2[0] - p1[0], p2[1] - p1[1]):
+                p1 = self.coordinates_to_pixels(p1)
+                p2 = self.coordinates_to_pixels(p2)
+                self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
                 
 
     def mark_city(self, city_loc, color=0):
