@@ -1,12 +1,12 @@
-from board import is_one_step
+from board import *
 
-class Mission:
+class Mission: # takes a the attributes of one mission and puts it in an object
     def __init__(self, load, dest_city, reward):
         self.load = load
         self.dest = dest_city
         self.reward = reward
 
-class MissionCard:
+class MissionCard: # takes a list of lists describing up to 3 mission cards
     def __init__(self, mission_1, mission_2=None, mission_3=None):
         self.missions = []
         self.missions.append(Mission(mission_1[0], mission_1[1], mission_1[2]))
@@ -16,13 +16,14 @@ class MissionCard:
             self.missions.append(Mission(mission_3[0], mission_3[1], mission_3[2]))
 
 class MyTrack:
-    def __init__(self, board):
+    def __init__(self, board, database):
         self.min_x = board.min_x
         self.max_x = board.max_x
         self.min_y = board.min_y
         self.max_y = board.max_y
         self.board = [[0 for _ in range(2 * (abs(self.min_x) + abs(self.max_x) + 1))] for _ in
                       range(2 * (abs(self.min_y) + abs(self.max_y) + 1))]
+        self.databse = database
         self.queued_track = []
         self.has_track = False
         self.mission_cards = [None, None, None]
@@ -107,3 +108,19 @@ class MyTrack:
     def remove_mission_card(self, num):
         if 1 <= num <= 3:
             self.mission_cards[num - 1] = None
+
+    def mission_costs(self):
+        m1Possible = []
+        m2Possible = []
+        m3Possible = []
+        for i in range(0,3)
+            load = database["loads"][self.mission_cards[i].load]
+            entry = database["loads"][tokenized[0]]
+            for city in entry:
+                visual.mark_city(database["cities"][city]["coords"], color)
+                output += print_city(database, city)
+        i=0
+        while self.mission_cards[i] is not None and i < len(self.mission_cards):
+            
+            path, cost = find_path(self.mission_cards[i], self.board, lambda p: p == end_city_loc)
+            i += 1
