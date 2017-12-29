@@ -67,5 +67,6 @@ This is an assistant program to the board game, Eurorails. The objective is to p
   - [x] Remove last command
   - [x] Add mission to existing track
   - [ ] Optimize path generation over missions
+  - [x] Re-implement logging to only log with save option on, so that track added to mytrack is removed if not saved
 - Major bug fixes
   - [x] Compute costs associated with building to/from major cities correctly

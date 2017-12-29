@@ -69,7 +69,7 @@ def handle_query(database, board, my_track, log, visual, query):
 
     # QUERY = save last command to real track
     elif keyword == "save":
-        my_track.save_queued_track(log)
+        my_track.save_queued_track(log, True)
 
     # QUERY = undo
     elif keyword == "undo":
@@ -119,7 +119,7 @@ def handle_query(database, board, my_track, log, visual, query):
             
             if len(additional_cities) > 0:
                 for city in additional_cities:
-                    my_track.save_queued_track(log)
+                    my_track.save_queued_track(log, save)
                     city_loc = database["cities"][city]["coords"]
     
                     visual.mark_city(city_loc, color)
@@ -130,10 +130,7 @@ def handle_query(database, board, my_track, log, visual, query):
                     output += print_path(path, cost)
                     visual.draw_path(path, color)
             
-                my_track.save_queued_track(log)
-                if not save:
-                    output += "NOTE: entering more than two cities requires saving track. If you do not want the track " \
-                              "to be saved, use the \"undo\" command.\n    "
+                my_track.save_queued_track(log, save)
     
         # QUERY = destination city and load
         elif keyword == "mission" and len(tokenized) >= 2:
@@ -253,7 +250,7 @@ def handle_query(database, board, my_track, log, visual, query):
                 my_track.append_to_queue(path)
                 output += print_path(path, cost, end_city)
                 visual.draw_path(path, color)
-                my_track.save_queued_track(log)
+                my_track.save_queued_track(log, save)
 
                 opt_load_city = None
                 opt_path = None
@@ -272,10 +269,6 @@ def handle_query(database, board, my_track, log, visual, query):
                 my_track.append_to_queue(opt_path)
                 output += print_path(opt_path, opt_cost, opt_load_city)
                 visual.draw_path(opt_path, color)
-
-            if not save:
-                output += "NOTE: entering more than two cities requires saving track. If you do not want the track " \
-                          "to be saved, use the \"undo\" command.\n    "
         
         elif keyword == "draw":
             path = []
@@ -303,7 +296,7 @@ def handle_query(database, board, my_track, log, visual, query):
             raise ValueError("Query could not be processed.")
 
     if save:
-        my_track.save_queued_track(log)
+        my_track.save_queued_track(log, True)
 
     return output
     
