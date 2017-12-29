@@ -56,19 +56,21 @@ class Board:
         else:
             dest = self(p2_x, p2_y)
 
-            if dest == "." or dest == "L":
+            if self(p1_x, p1_y) == 'L' and dest == 'L':
+                return 0
+            elif dest == '.' or dest == 'L':
                 cost = 1
-            elif dest == "m":
+            elif dest == 'm':
                 cost = 2
-            elif dest == "a":
+            elif dest == 'a':
                 cost = 5
-            elif dest == "S" or dest == "M":
+            elif dest == 'S' or dest == 'M':
                 cost = 3
-            elif dest == "h":
+            elif dest == 'h':
                 other_harbor, cost = self.harbors[(p2_x, p2_y)]
-                if self(other_harbor[0], other_harbor[1]) == "H":
+                if self(other_harbor[0], other_harbor[1]) == 'H':
                     cost += 3
-            elif dest == "H":
+            elif dest == 'H':
                 _, cost = self.harbors[(p2_x, p2_y)]
                 cost += 3
             else:
