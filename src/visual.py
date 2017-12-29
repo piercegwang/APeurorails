@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw, ImageTk
 import tkinter as tk
 from board import is_one_step
-from log import *
 
 class Visual:
     LINE_THICKNESS = 2
@@ -46,7 +45,7 @@ class Visual:
         
         self.log = log
 
-    def draw_path(self, points, color=0, save=False):
+    def draw_path(self, points, color=0):
         for i in range(len(points) - 1):
             p1 = points[i]
             p2 = points[i + 1]
@@ -54,8 +53,6 @@ class Visual:
                 p1 = self.coordinates_to_pixels(p1)
                 p2 = self.coordinates_to_pixels(p2)
                 self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
-        if save:
-            self.log.record("path", points)
 
     def mark_city(self, city_loc, color=0):
         city_loc = self.coordinates_to_pixels(city_loc)

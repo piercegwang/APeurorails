@@ -37,14 +37,14 @@ def print_path(path, cost, start_city=None):
 def clear_extra(my_track, log, visual):
     my_track.clean()
     my_track.queue_from_log(log)
-    my_track.save_queued_track()
+    my_track.save_queued_track(log, False)
     visual.redraw()
 
 def undo(my_track, log, visual):
     my_track.clean()
     log.pop()
     my_track.queue_from_log(log)
-    my_track.save_queued_track()
+    my_track.save_queued_track(log, False)
     visual.redraw()
 
 def handle_query(database, board, my_track, log, visual, query):
@@ -64,15 +64,12 @@ def handle_query(database, board, my_track, log, visual, query):
             log.clean()
             my_track.clean()
         else:
-            my_track.clean()
-            my_track.queue_from_log(log)
-            my_track.save_queued_track()
-            visual.redraw()
+            clear_extra(my_track, log, visual)
         
 
     # QUERY = save last command to real track
     elif keyword == "save":
-        my_track.save_queued_track()
+        my_track.save_queued_track(log)
 
     # QUERY = undo
     elif keyword == "undo":
@@ -101,10 +98,10 @@ def handle_query(database, board, my_track, log, visual, query):
         clear_extra(my_track, log, visual)
             
         # QUERY = two cities
-        if keyword == "path" and len(tokenized) == 2:
-            # TODO: expand to accommodate more than two cities
+        if keyword == "path" and len(tokenized) >= 2:
             start_city = tokenized[0]
             end_city = tokenized[1]
+            additional_cities = tokenized[2:]
             
             if start_city in database["cities"] and end_city in database["cities"]:
                 start_city_loc = database["cities"][start_city]["coords"]
@@ -115,15 +112,28 @@ def handle_query(database, board, my_track, log, visual, query):
                 output += print_city(database, start_city)
                 output += print_city(database, end_city)
                 
-                path, cost = find_path(start_city_loc, board, lambda p: p == end_city_loc)
+                path, cost = find_path(end_city_loc, board, lambda p: p == start_city_loc)
                 my_track.append_to_queue(path)
                 output += print_path(path, cost)
-                visual.draw_path(path, color, save)
-                
-            elif start_city not in database["cities"]:
-                raise ValueError(start_city + " is not a city in the database.")
-            elif end_city not in database["cities"]:
-                raise ValueError(end_city + " is not a city in the database.")
+                visual.draw_path(path, color)
+            
+            if len(additional_cities) > 0:
+                for city in additional_cities:
+                    my_track.save_queued_track(log)
+                    city_loc = database["cities"][city]["coords"]
+    
+                    visual.mark_city(city_loc, color)
+                    output += print_city(database, city)
+    
+                    path, cost = find_path(city_loc, board, lambda p: p in my_track)
+                    my_track.append_to_queue(path)
+                    output += print_path(path, cost)
+                    visual.draw_path(path, color)
+            
+                my_track.save_queued_track(log)
+                if not save:
+                    output += "NOTE: entering more than two cities requires saving track. If you do not want the track " \
+                              "to be saved, use the \"undo\" command.\n    "
     
         # QUERY = destination city and load
         elif keyword == "mission" and len(tokenized) >= 2:
@@ -150,7 +160,7 @@ def handle_query(database, board, my_track, log, visual, query):
                     output += print_city(database, end_city)
                     
                     output += print_path(path, cost, best_load_city)
-                    visual.draw_path(path, color, save)
+                    visual.draw_path(path, color)
                 
                 elif mode == "all" or (mode == "default" and not save): # default option -> mode == "all"; find all paths from load to city
                     for sc in start_cities:
@@ -166,7 +176,7 @@ def handle_query(database, board, my_track, log, visual, query):
                         path, cost = find_path(start_city_loc, board, lambda p: p == end_city_loc)
                         my_track.append_to_queue(path)
                         output += print_path(path, cost, sc)
-                        visual.draw_path(path, color, save)
+                        visual.draw_path(path, color)
             
             elif end_city not in database["cities"]:
                 raise ValueError(end_city + " is not a city in the database.")
@@ -188,7 +198,7 @@ def handle_query(database, board, my_track, log, visual, query):
                     path, cost = find_path(city_loc, board, lambda p: p == p in my_track)
                     my_track.append_to_queue(path)
                     
-                    visual.draw_path(path, color, save)
+                    visual.draw_path(path, color)
                     output += "Optimal Cost Path: cost " + str(cost) + ", length " + str(len(path))
 
         # QUERY = connect loads to existing track
@@ -222,7 +232,50 @@ def handle_query(database, board, my_track, log, visual, query):
         
                     output += "Best: " + opt_city + "\n    "
                     my_track.append_to_queue(opt_path)
-                    visual.draw_path(opt_path, color, save)
+                    visual.draw_path(opt_path, color)
+
+        # QUERY = destination city and load
+        elif keyword == "addmission" and len(tokenized) >= 2:
+            load = tokenized[0]
+            end_city = tokenized[1]
+            end_city_loc = database["cities"][end_city]["coords"]
+            
+            if end_city in database["cities"] and load in database["loads"]:
+                start_cities = database["loads"][load][:]
+
+                for sc in start_cities:
+                    visual.mark_city(database["cities"][sc]["coords"], color)
+                    output += print_city(database, sc)
+                visual.mark_city(database["cities"][end_city]["coords"], color)
+                output += print_city(database, end_city)
+
+                path, cost = find_path(end_city_loc, board, lambda p: p in my_track)
+                my_track.append_to_queue(path)
+                output += print_path(path, cost, end_city)
+                visual.draw_path(path, color)
+                my_track.save_queued_track(log)
+
+                opt_load_city = None
+                opt_path = None
+                opt_cost = None
+                for sc in start_cities:
+                    start_city_loc = database["cities"][sc]["coords"]
+                    end_city_loc = database["cities"][end_city]["coords"]
+
+                    path, cost = find_path(start_city_loc, board, lambda p: p in my_track)
+                    
+                    if opt_cost is None or cost < opt_cost:
+                        opt_load_city = sc
+                        opt_path = path
+                        opt_cost = cost
+                        
+                my_track.append_to_queue(opt_path)
+                output += print_path(opt_path, opt_cost, opt_load_city)
+                visual.draw_path(opt_path, color)
+
+            if not save:
+                output += "NOTE: entering more than two cities requires saving track. If you do not want the track " \
+                          "to be saved, use the \"undo\" command.\n    "
         
         elif keyword == "draw":
             path = []
@@ -244,13 +297,13 @@ def handle_query(database, board, my_track, log, visual, query):
                         path.append((path[-1][0], path[-1][1] - 1))
                     elif loc == "dr":
                         path.append((path[-1][0] + 1, path[-1][1] - 1))
-            visual.draw_path(path, color, save)
+            visual.draw_path(path, color)
         
         elif len(query.strip()) > 0:
             raise ValueError("Query could not be processed.")
 
     if save:
-        my_track.save_queued_track()
+        my_track.save_queued_track(log)
 
     return output
     

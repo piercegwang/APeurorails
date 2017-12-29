@@ -61,11 +61,11 @@ This is an assistant program to the board game, Eurorails. The objective is to p
 
 **Version 4.0**
 - Features
-  - [ ] Find best path between multiple cities
+  - [x] Find path between multiple cities, in order of entry
   - [x] Implement history of commands so that path generation is semi-mutable
   - [x] Draw custom paths
   - [x] Remove last command
-  - [ ] Add mission to existing track
+  - [x] Add mission to existing track
   - [ ] Optimize path generation over missions
 - Major bug fixes
   - [ ] Compute costs associated with building to/from major cities correctly

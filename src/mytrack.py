@@ -88,9 +88,11 @@ class MyTrack:
     def append_to_queue(self, path):
         self.queued_track.append(path)
 
-    def save_queued_track(self):
+    def save_queued_track(self, log, relog=True):
         for path in self.queued_track:
             self.add_track(path)
+            if relog:
+                log.record("path", path)
         self.empty_queued_track()
 
     def empty_queued_track(self):

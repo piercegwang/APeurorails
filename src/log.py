@@ -17,15 +17,23 @@ class Log:
         output = ""
         for query in self.query_log:
             output += str(query[0]) + ": "
-            for action, location in query[1]:
+            for i in range(len(query[1])):
+                action, location = query[1][i]
                 output += action + " "
-                for l in location:
-                    if l in self.database["points"]:
-                        output += self.database["points"][l]
+                if len(location) >= 1:
+                    if location[0] in self.database["points"]:
+                        output += self.database["points"][location[0]]
                     else:
-                        output += str(l)
-                    output += " "
-                output += "\n        "
+                        output += str(location[0])
+                if len(location) >= 2:
+                    output += " ... "
+                    if location[-1] in self.database["points"]:
+                        output += self.database["points"][location[-1]]
+                    else:
+                        output += str(location[-1])
+                output += "\n    "
+                if i < len(query[1]) - 1:
+                    output += "   "
         return output
     
     
