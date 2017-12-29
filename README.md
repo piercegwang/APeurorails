@@ -68,4 +68,4 @@ This is an assistant program to the board game, Eurorails. The objective is to p
   - [x] Add mission to existing track
   - [ ] Optimize path generation over missions
 - Major bug fixes
-  - [ ] Compute costs associated with building to/from major cities correctly
+  - [x] Compute costs associated with building to/from major cities correctly
