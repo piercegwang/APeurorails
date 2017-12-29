@@ -40,7 +40,7 @@ This is an assistant program to the board game, Eurorails. The objective is to p
   - [x] Query clean: erase drawings on board
   - [x] Add option to reload board
 - Major bug fixes
-  - Fixed errors in some of the city coordinates
+  - [x] Fixed errors in some of the city coordinates
 
 **Version 3.0**
 - Features
@@ -61,11 +61,11 @@ This is an assistant program to the board game, Eurorails. The objective is to p
 
 **Version 4.0**
 - Features
-  - [] Find best path between multiple cities
+  - [ ] Find best path between multiple cities
   - [x] Implement history of commands so that path generation is semi-mutable
   - [x] Draw custom paths
   - [x] Remove last command
-  - [] Add mission to existing track
-  - [] Optimize path generation over missions
+  - [ ] Add mission to existing track
+  - [ ] Optimize path generation over missions
 - Major bug fixes
-  - [] Compute costs associated with building to/from major cities correctly
+  - [ ] Compute costs associated with building to/from major cities correctly
