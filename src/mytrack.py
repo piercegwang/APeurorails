@@ -79,6 +79,9 @@ class MyTrack:
                     if (x, y, dx, dy) in self:
                         yield [(x, y), (x + dx, y + dy)]
 
+    def update_database(self, database):
+        self.database = database
+
     ###############
     # QUEUE LOGIC #
     ###############
@@ -93,6 +96,12 @@ class MyTrack:
     def empty_queued_track(self):
         self.queued_track = []
 
+    def queue_from_log(self, log):
+        for query in log:
+            for action, location in query[1]:
+                if action == "path":
+                    self.append_to_queue(location)
+    
     #################
     # MISSION LOGIC #
     #################
@@ -110,17 +119,18 @@ class MyTrack:
             self.mission_cards[num - 1] = None
 
     def mission_costs(self):
-        m1Possible = []
-        m2Possible = []
-        m3Possible = []
-        for i in range(0,3)
-            load = database["loads"][self.mission_cards[i].load]
-            entry = database["loads"][tokenized[0]]
-            for city in entry:
-                visual.mark_city(database["cities"][city]["coords"], color)
-                output += print_city(database, city)
-        i=0
-        while self.mission_cards[i] is not None and i < len(self.mission_cards):
-            
-            path, cost = find_path(self.mission_cards[i], self.board, lambda p: p == end_city_loc)
-            i += 1
+        raise NotImplementedError("mission_costs not implemented yet.")
+        # m1Possible = []
+        # m2Possible = []
+        # m3Possible = []
+        # for i in range(0,3)
+        #     load = database["loads"][self.mission_cards[i].load]
+        #     entry = database["loads"][tokenized[0]]
+        #     for city in entry:
+        #         visual.mark_city(database["cities"][city]["coords"], color)
+        #         output += print_city(database, city)
+        # i=0
+        # while self.mission_cards[i] is not None and i < len(self.mission_cards):
+        #     
+        #     path, cost = find_path(self.mission_cards[i], self.board, lambda p: p == end_city_loc)
+        #     i += 1

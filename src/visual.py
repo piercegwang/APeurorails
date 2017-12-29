@@ -1,5 +1,7 @@
 from PIL import Image, ImageDraw, ImageTk
 import tkinter as tk
+from board import is_one_step
+from log import *
 
 class Visual:
     LINE_THICKNESS = 2
@@ -30,7 +32,7 @@ class Visual:
     X_CONST = (16.21, -0.1)
     Y_CONST = (8.0645, 14.03)
 
-    def __init__(self, board_file):
+    def __init__(self, board_file, log):
         self.filepath = board_file
         self.board = Image.open(self.filepath)
         self.board = self.board.resize((4096 // 4, 3281 // 4), Image.ANTIALIAS)
@@ -41,8 +43,10 @@ class Visual:
         self.tk_img = ImageTk.PhotoImage(self.board)
         self.panel = tk.Label(self.window, image=self.tk_img)
         self.panel.pack(side="bottom", fill="both", expand="yes")
+        
+        self.log = log
 
-    def draw_path(self, points, color=0):
+    def draw_path(self, points, color=0, save=False):
         for i in range(len(points) - 1):
             p1 = points[i]
             p2 = points[i + 1]
@@ -50,6 +54,8 @@ class Visual:
                 p1 = self.coordinates_to_pixels(p1)
                 p2 = self.coordinates_to_pixels(p2)
                 self.draw.line([p1, p2], fill=color, width=Visual.LINE_THICKNESS)
+        if save:
+            self.log.record("path", points)
 
     def mark_city(self, city_loc, color=0):
         city_loc = self.coordinates_to_pixels(city_loc)
@@ -93,5 +99,13 @@ class Visual:
 
         pixel[0] += round(Visual.X_CONST[0] * (delta[0] + 0.5 * delta[1])) + round(Visual.X_CONST[1] * delta[1])
         pixel[1] -= round(Visual.Y_CONST[1] * delta[1])
-        # print(ref, pixel)
         return tuple(pixel)
+
+    def redraw(self, color=0):
+        self.clean()
+        for query in self.log:
+            for action, location in query[1]:
+                if action == "path":
+                    self.draw_path(location, color)
+                elif action == "city":
+                    self.mark_city(location, color)
