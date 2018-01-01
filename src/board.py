@@ -2,9 +2,11 @@ from random import choice
 from random import sample
 from mytrack import Track
 
-HARBOR_PENALTY = 12
-STEP_PENALTY = 0.001
-MAJOR_CITIES = ["madrid", "paris", "berlin", "ruhr", "wien", "holland", "milano"]
+REG_HARBOR_PENALTY = 12
+HIGH_HARBOR_PENALTY = 10000
+STEP_PENALTY = 0.2
+
+MAJOR_CITIES = ["madrid", "london", "paris", "berlin", "ruhr", "wien", "holland", "milano"]
 
 def is_one_step(dx, dy):
     return (dx, dy) in ((1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1))
@@ -18,6 +20,8 @@ class Board:
         self.max_y = max_y
         self.board = board
         self.harbors = harbors
+        self.harbor_penalty = REG_HARBOR_PENALTY
+        self.step_penalty = STEP_PENALTY
 
     def __call__(self, x, y):
         x_index = 2 * (x - self.min_x)
@@ -123,8 +127,14 @@ class Board:
 
             return cost
 
+    def cycle_harbor_penalty(self):
+        if self.harbor_penalty == REG_HARBOR_PENALTY:
+            self.harbor_penalty = HIGH_HARBOR_PENALTY
+        else:
+            self.harbor_penalty = REG_HARBOR_PENALTY
 
-def find_path(end_city, board, my_track, reached_goal, reverse=False):
+
+def find_path(start_city, board, my_track, reached_goal, reverse=True):
     """
     Finds path from end city to some goal (e.g. start city, load, existing track).
     """
@@ -147,9 +157,9 @@ def find_path(end_city, board, my_track, reached_goal, reverse=False):
                 if not board.is_harbor(point.x, point.y) or \
                         board.is_harbor(point.x, point.y) and not board.is_harbor(point.x + dx, point.y + dy):
                     c = board.compute_cost(point.coord, (point.x + dx, point.y + dy), my_track)
-                    neighbors.append(Point((point.x + dx, point.y + dy), point, point.build_cost + c, point.penalty + STEP_PENALTY))
+                    neighbors.append(Point((point.x + dx, point.y + dy), point, point.build_cost + c, point.penalty + board.step_penalty))
         if board.is_harbor(point.x, point.y):
-            neighbors.append(Point(board.get_other_harbor(point.x, point.y), point, point.build_cost, point.penalty + HARBOR_PENALTY))
+            neighbors.append(Point(board.get_other_harbor(point.x, point.y), point, point.build_cost, point.penalty + board.harbor_penalty))
 
         return neighbors
 
@@ -246,11 +256,11 @@ def find_path(end_city, board, my_track, reached_goal, reverse=False):
             return other is not None and self.x == other.x and self.y == other.y
 
     agenda = LinkedList()
-    if type(end_city) == set:
-        for ec in end_city:
-            agenda.append(Point(ec, cost=board.compute_point_cost(ec, my_track) if not reverse else 0))
+    if type(start_city) == set or type(start_city) == list:
+        for ec in start_city:
+            agenda.append(Point(ec, cost=board.compute_point_cost(ec, my_track)))
     else:
-        agenda.append(Point(end_city, cost=board.compute_point_cost(end_city, my_track) if not reverse else 0))
+        agenda.append(Point(start_city, cost=board.compute_point_cost(start_city, my_track)))
     visited = set()
     while agenda.size() > 0:
         current_point, agenda = agenda.pop_min(value=Point.get_cost)
@@ -262,9 +272,9 @@ def find_path(end_city, board, my_track, reached_goal, reverse=False):
                 neighbors = get_neighbors(current_point)
                 for n in neighbors:
                     if n not in visited:
-                        if reached_goal((n.x, n.y)) and not reverse:
-                            c = board.compute_point_cost((n.x, n.y), my_track)
-                            n.build_cost -= c # correction for path calculation from end city to beginning city
+                        # if reached_goal((n.x, n.y)) and not reverse:
+                        #     c = board.compute_point_cost((n.x, n.y), my_track)
+                        #     n.build_cost -= c # correction for path calculation from end city to beginning city
                         agenda.append(n)
 
     print("No path found")

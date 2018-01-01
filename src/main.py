@@ -172,8 +172,8 @@ def handle_query(database, board, my_track, log, visual, results_path, query):
             mode = None
             if end_city in database["cities"] and load in database["loads"]:
                 start_cities = database["loads"][load][:]
-                if len(tokenized) > 0:
-                    mode = tokenized[0]
+                if len(tokenized) > 2:
+                    mode = tokenized[2]
                 if mode != "all" and mode != "best":
                     mode = "best" if save else "all"
 
@@ -184,7 +184,7 @@ def handle_query(database, board, my_track, log, visual, results_path, query):
                 if mode == "best": # find best path from load to city
                     load_city_locs = [database["cities"][sc]["coords"] for sc in start_cities]
                     
-                    path, cost = find_path(end_city_loc, board, my_track, lambda p: p in load_city_locs)
+                    path, cost = find_path(load_city_locs, board, my_track, lambda p: p == end_city_loc)
                     my_track.append_to_queue(path)
                     best_load_city = database["points"][path[0]]
         
@@ -346,12 +346,19 @@ def handle_query(database, board, my_track, log, visual, results_path, query):
             my_track.append_to_queue(path)
         
         # QUERY = remove a mission card
-        elif keyword == "remove":
+        elif keyword == "remove" and len(tokenized) >= 1:
             sec_keyword = tokenized[0]
             tokenized = tokenized[1:]
             if sec_keyword == "card":
                 my_track.remove_mission_card(int(tokenized[0]))
         
+        # QUERY = toggle harbor penalty
+        elif keyword == "toggle" and len(tokenized) >= 1:
+            sec_keyword = tokenized[0]
+            if sec_keyword == "harbor":
+                board.cycle_harbor_penalty()
+                output += "Harbor penalty: " + ("REG" if board.harbor_penalty == REG_HARBOR_PENALTY else "HIGH") + "\n" + INDENT_1
+
         # QUERY could not be processed
         elif len(query.strip()) > 0:
             raise ValueError("Query could not be processed.")

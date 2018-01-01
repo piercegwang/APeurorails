@@ -118,8 +118,8 @@ Notes:
 **Version 4.2**
 - Features
   - [ ] Make it possible to load opponent track in game to optimize around opp. track
-  - [ ] Make it possible to restrict harbors
-  - [ ] Clean up README and code
+  - [x] Implement better harbor penalization
+  - [x] Clean up README and code
   - [ ] Improve cost calculation by setting starting city
 - Major bug fixes
   - [x] Fixed bug where load query would only output information on first load in list
