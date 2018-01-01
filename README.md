@@ -30,6 +30,8 @@ This is an assistant program to the board game, Eurorails. The objective is to p
 `draw <path>` - draws the custom specified path using absolute and relative locations
 - Can specify either exact coordinates, cities, or relative coordinates (in CCW order from right, `r, ur, ul, l, dl, dr`)
 
+`toggle harbor` - toggles the harbor penalty, to force track to only be built over a ferry if necessary
+
 `print [log, missions]` - outputs status of saved data, depending on secondary keyword:
 - `log` - outputs log history
 - `missions` - outputs currently saved mission cards

@@ -258,9 +258,11 @@ def find_path(start_city, board, my_track, reached_goal, reverse=True):
     agenda = LinkedList()
     if type(start_city) == set or type(start_city) == list:
         for ec in start_city:
-            agenda.append(Point(ec, cost=board.compute_point_cost(ec, my_track)))
+            # agenda.append(Point(ec, cost=board.compute_point_cost(ec, my_track)))
+            agenda.append(Point(ec, cost=0))
     else:
-        agenda.append(Point(start_city, cost=board.compute_point_cost(start_city, my_track)))
+        # agenda.append(Point(start_city, cost=board.compute_point_cost(start_city, my_track)))
+        agenda.append(Point(start_city, cost=0))
     visited = set()
     while agenda.size() > 0:
         current_point, agenda = agenda.pop_min(value=Point.get_cost)
