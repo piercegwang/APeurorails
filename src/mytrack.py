@@ -1,6 +1,4 @@
-from board import *
-from random import sample
-from itertools import permutations
+import board
 
 NUMBER_TRIES = 7
 
@@ -98,7 +96,7 @@ class Track:
             if i < len(sequence) - 1:
                 dx = sequence[i + 1][0] - x
                 dy = sequence[i + 1][1] - y
-                if is_one_step(dx, dy):
+                if board.is_one_step(dx, dy):
                     claim_track(self, x, y, dx, dy)
 
     def __contains__(self, pt):
@@ -194,6 +192,12 @@ class MyTrack(Track):
         copy.mission_cards = [None, None, None]
         return copy
 
+    def add_from_log(self, log):
+        for query in log:
+            for action, location in query[1]:
+                if action == "path":
+                    self.add_track(location)
+
     ###############
     # QUEUE LOGIC #
     ###############
@@ -281,10 +285,10 @@ class MyTrack(Track):
             all_cities.append([self.database["cities"][city]["coords"] for city in self.database["loads"][l]])
         if require_major_city:
             if self.count_major_cities() == 0:
-                major_cities = [self.database["cities"][mc]["coords"] for mc in MAJOR_CITIES]
+                major_cities = [self.database["cities"][mc]["coords"] for mc in board.MAJOR_CITIES]
                 all_cities.append(major_cities)
 
-        all_paths, cost = connect_cities(self.orig_board, self, all_cities, NUMBER_TRIES)
+        all_paths, cost = board.connect_cities(self.orig_board, self, all_cities, NUMBER_TRIES)
         return all_paths, cost, reward
 
     def compute_all(self, mission_1, mission_2, mission_3, log, visual, color, filepath):
@@ -334,55 +338,6 @@ class MyTrack(Track):
 
         return costs, rewards
 
-
-def connect_cities(board, my_track, cities, number_tries=1):
-    def contained(tracks):
-        def __contained(point):
-            for t in tracks:
-                if point in t:
-                    return True
-            return False
-        return __contained
-
-    tracks = []
-    if my_track is not None and my_track.has_track:
-        tracks.append(my_track)
-    for group in cities:
-        t = Track(board)
-        for c in group:
-            t.add_representative(c[0], c[1])
-        tracks.append(t)
-    
-    opt_paths = None
-    opt_cost = None
-    actual_number_tries = number_tries if number_tries <= len(tracks) else len(tracks)
-    order = sample(range(len(tracks)), actual_number_tries)
-    for i in range(actual_number_tries):
-        tracks_cp = [t.copy() for t in tracks]
-        home = tracks_cp.pop(order[i])
-        all_paths = []
-        total_cost = 0
-        
-        while len(tracks_cp) > 0:
-            p, c = find_path(home.representatives, board, home, reached_goal=contained(tracks_cp), reverse=True)
-            home.add_track(p)
-            i = 0
-            while i < len(tracks_cp):
-                t = tracks_cp[i]
-                if p[-1] in t:
-                    home.union(t)
-                    tracks_cp.pop(i)
-                else:
-                    i += 1
-            home.remove_unconnected(p[0])
-            all_paths.append(p)
-            total_cost += c
-        
-        if opt_cost is None or opt_cost > total_cost:
-            opt_paths = all_paths
-            opt_cost = total_cost
-
-    return opt_paths, opt_cost
             
             
             

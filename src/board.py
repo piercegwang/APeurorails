@@ -1,4 +1,6 @@
 from random import choice
+from random import sample
+from mytrack import Track
 
 HARBOR_PENALTY = 12
 STEP_PENALTY = 0.001
@@ -269,3 +271,54 @@ def find_path(end_city, board, my_track, reached_goal, reverse=False):
     return None, None
     # TODO: implement A* search
     # TODO: balance between cost and distance
+
+
+def connect_cities(board, my_track, cities, number_tries=1):
+    def contained(tracks):
+        def __contained(point):
+            for t in tracks:
+                if point in t:
+                    return True
+            return False
+
+        return __contained
+
+    tracks = []
+    if my_track is not None and my_track.has_track:
+        tracks.append(my_track)
+    for group in cities:
+        t = Track(board)
+        for c in group:
+            t.add_representative(c[0], c[1])
+        tracks.append(t)
+
+    opt_paths = None
+    opt_cost = None
+    actual_number_tries = number_tries if number_tries <= len(tracks) else len(tracks)
+    order = sample(range(len(tracks)), actual_number_tries)
+    for i in range(actual_number_tries):
+        tracks_cp = [t.copy() for t in tracks]
+        home = tracks_cp.pop(order[i])
+        all_paths = []
+        total_cost = 0
+
+        while len(tracks_cp) > 0:
+            p, c = find_path(home.representatives, board, home, reached_goal=contained(tracks_cp), reverse=True)
+            home.add_track(p)
+            i = 0
+            while i < len(tracks_cp):
+                t = tracks_cp[i]
+                if p[-1] in t:
+                    home.union(t)
+                    tracks_cp.pop(i)
+                else:
+                    i += 1
+            home.remove_unconnected(p[0])
+            all_paths.append(p)
+            total_cost += c
+
+        if opt_cost is None or opt_cost > total_cost:
+            opt_paths = all_paths
+            opt_cost = total_cost
+
+    return opt_paths, opt_cost

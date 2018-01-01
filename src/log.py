@@ -44,6 +44,8 @@ class Log:
                     self.query_log.pop()
             else:
                 self.query_log.pop()
+        else:
+            raise IndexError("pop from empty log.")
     
     def update_database(self, database):
         self.database = database

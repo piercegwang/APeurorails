@@ -7,17 +7,43 @@ This is an assistant program to the board game, Eurorails. The objective is to p
 
 `load <list of loads>` - generates list of cities with specified loads
 
-`path <city 1> <city 2>` - generates optimal path between two cities
+`path <list of cities>` - generates optimal path among cities (ignores owned track)
+- This does the same thing as `add city ... load ...` but ignores existing track
 
-`mission <load> <city> [all or best]` - generates path from load to city, either showing a path for each city with the load or the optimal path
+`mission <load> <city> [all or best]` - generates path from load to city, either showing a path for each city with the load or the optimal path (ignores owned track)
 
-`addcity <list of cities>` - generates paths from each city in list to existing track
+`add city <list of cities> load <list of loads>` - generates paths from existing track to each city or load
+- `one_major` - automatically adds all major cities (requires only one to be connected)
+- `all_majors` - automatically adds all major cities (requires all to be connected)
 
-`addload <list of loads>` - generates path from each load (best path) to existing track
+`add mission <load> <city>` - a shorthand for `add city ... load ...` for a single mission
 
-`save` - saves queued track
+`remove card #` - removes specified card (by number) from stored data
 
-`clean [all]` - clears board and redraws owned track; `all` keyword clears owned track
+`compute # # # [include_majors]` - computes the best path for the specified selection of missions and existing track.
+- Mission number should be between 1 and 3, inclusive. If 0 is specified, no mission is selected for that card.
+- The default option is to require a major city to be connected, but if `n` is specified at the end no major city will be included.
+
+`compute all [y/n] [y/n] [y/n]` - computes all selections of missions for the enabled cards and existing track.
+- If no parameters are specified, all mission cards are included.
+
+`draw <path>` - draws the custom specified path using absolute and relative locations
+- Can specify either exact coordinates, cities, or relative coordinates (in CCW order from right, `r, ur, ul, l, dl, dr`)
+
+`print [log, missions]` - outputs status of saved data, depending on secondary keyword:
+- `log` - outputs log history
+- `missions` - outputs currently saved mission cards
+
+`save` - saves queued track from last query to my_track and log
+
+`clean [all]` - clears board and redraws owned track from log; `all` secondary keyword clears owned track
+
+`undo` - removes last query from log and recomputes owned track and board from log
+
+Notes:
+- An empty query will just clear extra track.
+- An asterisk after the primary keyword will save the generated track.
+
 
 ## Version Control
 
@@ -89,3 +115,7 @@ This is an assistant program to the board game, Eurorails. The objective is to p
 - Features
   - [ ] Make it possible to load opponent track in game to optimize around opp. track
   - [ ] Make it possible to restrict harbors
+  - [ ] Clean up README and code
+  - [ ] Improve cost calculation by setting starting city
+- Major bug fixes
+  - [x] Fixed bug where load query would only output information on first load in list
