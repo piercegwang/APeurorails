@@ -366,6 +366,7 @@ def handle_query(database, board, my_track, log, visual, query):
                     elif loc == "dr":
                         path.append((path[-1][0] + 1, path[-1][1] - 1))
             visual.draw_path(path, color)
+            my_track.append_to_queue(path)
         
         # QUERY = remove a mission card
         elif keyword == "remove":

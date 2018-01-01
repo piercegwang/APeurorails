@@ -2,7 +2,7 @@ from random import choice
 
 HARBOR_PENALTY = 12
 STEP_PENALTY = 0.001
-MAJOR_CITIES = ["madrid", "london", "paris", "berlin", "ruhr", "wien", "holland", "milano"]
+MAJOR_CITIES = ["madrid", "paris", "berlin", "ruhr", "wien", "holland", "milano"]
 
 def is_one_step(dx, dy):
     return (dx, dy) in ((1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1))
