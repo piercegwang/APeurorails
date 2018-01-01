@@ -178,7 +178,7 @@ class MyTrack(Track):
         major_cities = ["madrid", "london", "paris", "berlin", "ruhr", "wien", "holland", "milano"]
         count = 0
         for mc in major_cities:
-            if self.database["cities"][mc] in self:
+            if self.database["cities"][mc]["coords"] in self:
                 count += 1
         return count
     
