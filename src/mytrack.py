@@ -287,7 +287,7 @@ class MyTrack(Track):
         all_paths, cost = connect_cities(self.orig_board, self, all_cities, NUMBER_TRIES)
         return all_paths, cost, reward
 
-    def compute_all(self, mission_1, mission_2, mission_3, visual, color, filepath):
+    def compute_all(self, mission_1, mission_2, mission_3, log, visual, color, filepath):
         mission_cards = []
         if mission_1:
             if self.has_mission_card(1):
@@ -321,10 +321,16 @@ class MyTrack(Track):
             for choice_2 in mission_2_options:
                 for choice_3 in mission_3_options:
                     name_append = str(choice_1) + str(choice_2) + str(choice_3)
-                    p, c, r = self.compute_optimal_track(choice_1, choice_2, choice_3, True) # polymerase chain reaction
+                    p, c, r = self.compute_optimal_track(choice_1 if choice_1 != 0 else None,
+                                                         choice_2 if choice_2 != 0 else None,
+                                                         choice_3 if choice_3 != 0 else None, True) # polymerase chain reaction
                     visual.save(filepath + "missions_" + name_append + ".png", p, color)
                     costs.append(c)
                     rewards.append(r)
+                    self.clean()
+                    self.queue_from_log(log)
+                    self.save_queued_track(log, False)
+                    visual.redraw()
 
         return costs, rewards
 

@@ -19,7 +19,7 @@ This is an assistant program to the board game, Eurorails. The objective is to p
 
 `clean [all]` - clears board and redraws owned track; `all` keyword clears owned track
 
-## Version History
+## Version Control
 
 **Version 1.0**
 - Features
@@ -79,6 +79,13 @@ This is an assistant program to the board game, Eurorails. The objective is to p
 - Major bug fixes
   - [x] Fixed bug where draw function didn't save because it didn't queue
 
+### Future Versions
+
 **Version 4.1**
 - Features
+  - [x] Make it possible to load queries from file
+
+**Version 4.2**
+- Features
   - [ ] Make it possible to load opponent track in game to optimize around opp. track
+  - [ ] Make it possible to restrict harbors

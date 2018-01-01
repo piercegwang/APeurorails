@@ -3,6 +3,7 @@ from mytrack import *
 from visual import *
 from board import *
 from log import *
+from collections import deque
 from optparse import OptionParser
 import random
 
@@ -54,7 +55,7 @@ def handle_query(database, board, my_track, log, visual, query):
     tokenized = tokenized[1:]
     output = ""
     color = (random.randrange(0, 150), random.randrange(0, 150), random.randrange(0, 150))
-    save = keyword[-1] == "*"
+    save = len(keyword) > 0 and keyword[-1] == "*"
     if save:
         keyword = keyword[:-1]
     
@@ -107,7 +108,7 @@ def handle_query(database, board, my_track, log, visual, query):
     
     else:
         clear_extra(my_track, log, visual)
-            
+
         # QUERY = two cities
         if keyword == "path" and len(tokenized) >= 2:
             start_city = tokenized[0]
@@ -339,7 +340,7 @@ def handle_query(database, board, my_track, log, visual, query):
             choose_mission_1 = tokenized[0] == "y"
             choose_mission_2 = tokenized[1] == "y"
             choose_mission_3 = tokenized[2] == "y"
-            costs, rewards = my_track.compute_all(choose_mission_1, choose_mission_2, choose_mission_3, visual, color, DEFAULT_MISSIONS_PATH)
+            costs, rewards = my_track.compute_all(choose_mission_1, choose_mission_2, choose_mission_3, log, visual, color, DEFAULT_MISSIONS_PATH)
             for i in range(len(costs)):
                 output += "Cost " + str(i+1) + ":   " + str(costs[i]) + "\n      "
                 output += "Reward " + str(i+1) + ": " + str(rewards[i]) + "\n    "
@@ -399,17 +400,31 @@ if __name__ == '__main__':
     visual = Visual(DEFAULT_IMG_PATH, log)
     my_track = MyTrack(board, database)
 
+    queue = deque()
     i = 1
     while True:
         log.step()
         visual.update()
-        
-        raw_expression = input(str(i) + ": ")
+
+        if len(queue) > 0:
+            raw_expression = queue.popleft()
+            print(str(i) + ": " + raw_expression)
+        else:
+            raw_expression = input(str(i) + ": ")
+
         if raw_expression == "reload":
             database, board = load_files(opts.db_path, opts.board_path, opts.harbor_path)
             log.update_database(database)
             my_track.update_database(database)
-        
+
+        # QUERY = file
+        elif raw_expression[:4] == "file":
+            tokenized = raw_expression.split(' ')
+            queries = open(tokenized[1]).read().split('\n')
+            for q in queries:
+                queue.append(q)
+
+
         elif raw_expression == "e" or raw_expression == "exit":
             visual.quit()
             break
