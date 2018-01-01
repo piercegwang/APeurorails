@@ -34,6 +34,10 @@ This is an assistant program to the board game, Eurorails. The objective is to p
 - `log` - outputs log history
 - `missions` - outputs currently saved mission cards
 
+`reload` - reload database files (database, harbors, ascii map)
+
+`file <path_to_file>` - loads queries from files and runs each sequentially through handler
+
 `save` - saves queued track from last query to my_track and log
 
 `clean [all]` - clears board and redraws owned track from log; `all` secondary keyword clears owned track
