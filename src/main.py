@@ -75,15 +75,25 @@ def handle_query(database, board, my_track, log, visual, query):
     elif keyword == "undo":
         undo(my_track, log, visual)
         
-    elif keyword == "log":
-        return log.print()
+    # QUERY = print
+    elif keyword == "print":
+        sec_keyword = tokenized[0]
+        tokenized = tokenized[1:]
+        
+        # QUERY = print log
+        if sec_keyword == "log":
+            return log.print()
+    
+        # QUERY = print missions
+        elif sec_keyword == "missions":
+            return my_track.print_current_mission_cards()
 
     # QUERY = city
     elif keyword == "city":
         for city in tokenized:
             if city in database["cities"]:
                 visual.mark_city(database["cities"][city]["coords"], color)
-                output += print_city(database, tokenized[0])
+                output += print_city(database, city)
 
     # QUERY = load
     elif keyword == "load":
@@ -112,7 +122,7 @@ def handle_query(database, board, my_track, log, visual, query):
                 output += print_city(database, start_city)
                 output += print_city(database, end_city)
                 
-                path, cost = find_path(end_city_loc, board, lambda p: p == start_city_loc)
+                path, cost = find_path(end_city_loc, board, my_track, lambda p: p == start_city_loc)
                 my_track.append_to_queue(path)
                 output += print_path(path, cost)
                 visual.draw_path(path, color)
@@ -125,7 +135,7 @@ def handle_query(database, board, my_track, log, visual, query):
                     visual.mark_city(city_loc, color)
                     output += print_city(database, city)
     
-                    path, cost = find_path(city_loc, board, lambda p: p in my_track)
+                    path, cost = find_path(city_loc, board, my_track, lambda p: p in my_track)
                     my_track.append_to_queue(path)
                     output += print_path(path, cost)
                     visual.draw_path(path, color)
@@ -133,23 +143,32 @@ def handle_query(database, board, my_track, log, visual, query):
                 my_track.save_queued_track(log, save)
     
         # QUERY = destination city and load
-        elif keyword == "mission" and len(tokenized) >= 2:
-            load = tokenized[0]
-            end_city = tokenized[1]
+        elif keyword == "mission" and (len(tokenized) >= 3):
+            if tokenized[0] in ('1', '2', '3') and tokenized[1] in ('1', '2', '3'):
+                mission = my_track.get_mission_card(int(tokenized[0])).get_mission(int(tokenized[1]))
+                load = mission.load
+                end_city = mission.dest
+                reward = mission.reward
+                tokenized = tokenized[2:]
+            else:
+                load = tokenized[0]
+                end_city = tokenized[1]
+                reward = tokenized[2]
+                tokenized = tokenized[3:]
             mode = None
             if end_city in database["cities"] and load in database["loads"]:
                 start_cities = database["loads"][load][:]
-                if len(tokenized) >= 3:
-                    mode = tokenized[2]
-                if mode != "all" or mode != "best":
+                if len(tokenized) > 0:
+                    mode = tokenized[0]
+                if mode != "all" and mode != "best":
                     mode = "default"
         
                 if mode == "best" or (mode == "default" and save): # find best path from load to city
                     load_city_locs = [database["cities"][sc]["coords"] for sc in start_cities]
                     end_city_loc = database["cities"][end_city]["coords"]
-                    path, cost = find_path(end_city_loc, board, lambda p: p in load_city_locs)
+                    path, cost = find_path(end_city_loc, board, my_track, lambda p: p in load_city_locs)
                     my_track.append_to_queue(path)
-                    best_load_city = database["points"][path[-1]]
+                    best_load_city = database["points"][path[0]]
         
                     visual.mark_city(database["cities"][best_load_city]["coords"], color)
                     output += print_city(database, best_load_city)
@@ -158,6 +177,7 @@ def handle_query(database, board, my_track, log, visual, query):
                     
                     output += print_path(path, cost, best_load_city)
                     visual.draw_path(path, color)
+                    output += "Cost:   " + str(cost) + "\n    "
                 
                 elif mode == "all" or (mode == "default" and not save): # default option -> mode == "all"; find all paths from load to city
                     for sc in start_cities:
@@ -170,106 +190,150 @@ def handle_query(database, board, my_track, log, visual, query):
                         start_city_loc = database["cities"][sc]["coords"]
                         end_city_loc = database["cities"][end_city]["coords"]
                         
-                        path, cost = find_path(start_city_loc, board, lambda p: p == end_city_loc)
+                        path, cost = find_path(start_city_loc, board, my_track, lambda p: p == end_city_loc)
                         my_track.append_to_queue(path)
                         output += print_path(path, cost, sc)
                         visual.draw_path(path, color)
+
+                output += "Reward: " + str(reward) + "\n    "
             
             elif end_city not in database["cities"]:
                 raise ValueError(end_city + " is not a city in the database.")
             elif load not in database["loads"]:
                 raise ValueError(load + " is not a valid load in the database.")
         
-        # QUERY = connect cities to existing track
-        elif keyword == "add" or keyword == "addcity":
-            
-            if not my_track.has_track:
-                raise Exception("No track currently owned.")
+        elif keyword == "add":
+            sec_keyword = tokenized[0]
+            tokenized = tokenized[1:]
+        
+            # QUERY = connect cities to existing track
+            if sec_keyword == "city":
+                
+                if not my_track.has_track:
+                    raise Exception("No track currently owned.")
+        
+                for q in tokenized:
+                    if q in database["cities"]:
+                        city = q
+                        city_loc = database["cities"][city]["coords"]
+                        visual.mark_city(city_loc, color)
+                        output += print_city(database, city)
+                        path, cost = find_path(city_loc, board, my_track, lambda p: p == p in my_track)
+                        my_track.append_to_queue(path)
+                        
+                        visual.draw_path(path, color)
+                        output += print_path(path, cost)
     
-            for q in tokenized:
-                if q in database["cities"]:
-                    city = q
-                    city_loc = database["cities"][city]["coords"]
-                    visual.mark_city(city_loc, color)
-                    output += print_city(database, city)
-                    path, cost = find_path(city_loc, board, lambda p: p == p in my_track)
-                    my_track.append_to_queue(path)
-                    
-                    visual.draw_path(path, color)
-                    output += "Optimal Cost Path: cost " + str(cost) + ", length " + str(len(path))
-
-        # QUERY = connect loads to existing track
-        elif keyword == "addload":
-        
-            if not my_track.has_track:
-                raise Exception("No track currently owned.")
-        
-            for q in tokenized:
-                if q in database["loads"]:
-                    load_cities = database["loads"][q][:]
-                    for sc in load_cities:
+            # QUERY = connect loads to existing track
+            elif sec_keyword == "load":
+            
+                if not my_track.has_track:
+                    raise Exception("No track currently owned.")
+            
+                for q in tokenized:
+                    if q in database["loads"]:
+                        load_cities = database["loads"][q][:]
+                        for sc in load_cities:
+                            visual.mark_city(database["cities"][sc]["coords"], color)
+                            output += print_city(database, sc)
+            
+                        opt_path = None
+                        opt_cost = None
+                        opt_city = None
+                        for sc in load_cities:
+                            load_city_loc = database["cities"][sc]["coords"]
+            
+                            path, cost = find_path(load_city_loc, board, my_track, lambda p: p in my_track)
+            
+                            if opt_cost is None or cost < opt_cost or (
+                                    cost == opt_cost and len(path) < len(opt_path)):
+                                opt_path = path
+                                opt_cost = cost
+                                opt_city = sc
+            
+                            output += print_path(path, cost, sc)
+            
+                        output += "Best: " + opt_city + "\n    "
+                        my_track.append_to_queue(opt_path)
+                        visual.draw_path(opt_path, color)
+    
+            # QUERY = destination city and load
+            elif sec_keyword == "mission" and (len(tokenized) == 2 or len(tokenized) == 3):
+                
+                if tokenized[0] in ('1', '2', '3') and tokenized[1] in ('1', '2', '3'):
+                    mission = my_track.get_mission_card(int(tokenized[0])).get_mission(int(tokenized[1]))
+                    load = mission.load
+                    end_city = mission.dest
+                    reward = mission.reward
+                else:
+                    load = tokenized[0]
+                    end_city = tokenized[1]
+                    reward = tokenized[2]
+                end_city_loc = database["cities"][end_city]["coords"]
+                
+                if end_city in database["cities"] and load in database["loads"]:
+                    start_cities = database["loads"][load][:]
+    
+                    for sc in start_cities:
                         visual.mark_city(database["cities"][sc]["coords"], color)
                         output += print_city(database, sc)
-        
+                    visual.mark_city(database["cities"][end_city]["coords"], color)
+                    output += print_city(database, end_city)
+    
+                    path, cost = find_path(end_city_loc, board, my_track, lambda p: p in my_track)
+                    my_track.append_to_queue(path)
+                    output += print_path(path, cost, end_city)
+                    visual.draw_path(path, color)
+                    my_track.save_queued_track(log, save)
+    
+                    opt_load_city = None
                     opt_path = None
                     opt_cost = None
-                    opt_city = None
-                    for sc in load_cities:
-                        load_city_loc = database["cities"][sc]["coords"]
-        
-                        path, cost = find_path(load_city_loc, board, lambda p: p in my_track)
-        
-                        if opt_cost is None or cost < opt_cost or (
-                                cost == opt_cost and len(path) < len(opt_path)):
+                    for sc in start_cities:
+                        start_city_loc = database["cities"][sc]["coords"]
+                        end_city_loc = database["cities"][end_city]["coords"]
+    
+                        path, cost = find_path(start_city_loc, board, my_track, lambda p: p in my_track)
+                        
+                        if opt_cost is None or cost < opt_cost:
+                            opt_load_city = sc
                             opt_path = path
                             opt_cost = cost
-                            opt_city = sc
-        
-                        output += print_path(path, cost, sc)
-        
-                    output += "Best: " + opt_city + "\n    "
+                            
                     my_track.append_to_queue(opt_path)
+                    output += print_path(opt_path, opt_cost, opt_load_city)
                     visual.draw_path(opt_path, color)
+                    output += "Cost:   " + str(opt_cost) + "\n    "
+                    output += "Reward: " + str(reward) + "\n    "
 
-        # QUERY = destination city and load
-        elif keyword == "addmission" and len(tokenized) >= 2:
-            load = tokenized[0]
-            end_city = tokenized[1]
-            end_city_loc = database["cities"][end_city]["coords"]
-            
-            if end_city in database["cities"] and load in database["loads"]:
-                start_cities = database["loads"][load][:]
+            # QUERY = add a new mission card
+            elif sec_keyword == "card":
+                if len(tokenized) < 9:
+                    raise ValueError("Missing fields in mission card.")
+                my_track.save_mission_card((tokenized[0], tokenized[1], tokenized[2]), (tokenized[3], tokenized[4],
+                                           tokenized[5]), (tokenized[6], tokenized[7], tokenized[8]))
 
-                for sc in start_cities:
-                    visual.mark_city(database["cities"][sc]["coords"], color)
-                    output += print_city(database, sc)
-                visual.mark_city(database["cities"][end_city]["coords"], color)
-                output += print_city(database, end_city)
+            # QUERY exists but could not be processed
+            elif len(query.strip()) > 0:
+                raise ValueError("Query could not be processed.")
 
-                path, cost = find_path(end_city_loc, board, lambda p: p in my_track)
-                my_track.append_to_queue(path)
-                output += print_path(path, cost, end_city)
-                visual.draw_path(path, color)
-                my_track.save_queued_track(log, save)
+        # QUERY = compute
+        elif keyword == "compute":
+            select_1 = int(tokenized[0])
+            select_2 = None
+            select_3 = None
+            if len(tokenized) >= 2:
+                select_2 = int(tokenized[1])
+                if len(tokenized) >= 3:
+                    select_3 = int(tokenized[2])
+            all_paths, cost, reward = my_track.compute_optimal_track(select_1, select_2, select_3)
+            for p in all_paths:
+                visual.draw_path(p, color)
+                my_track.append_to_queue(p)
+            output += "Total Cost: " + str(cost) + "\n    "
+            output += "Reward: " + str(reward) + "\n    "
 
-                opt_load_city = None
-                opt_path = None
-                opt_cost = None
-                for sc in start_cities:
-                    start_city_loc = database["cities"][sc]["coords"]
-                    end_city_loc = database["cities"][end_city]["coords"]
-
-                    path, cost = find_path(start_city_loc, board, lambda p: p in my_track)
-                    
-                    if opt_cost is None or cost < opt_cost:
-                        opt_load_city = sc
-                        opt_path = path
-                        opt_cost = cost
-                        
-                my_track.append_to_queue(opt_path)
-                output += print_path(opt_path, opt_cost, opt_load_city)
-                visual.draw_path(opt_path, color)
-        
+        # QUERY = draw a custom path
         elif keyword == "draw":
             path = []
             for loc in tokenized:
@@ -292,6 +356,14 @@ def handle_query(database, board, my_track, log, visual, query):
                         path.append((path[-1][0] + 1, path[-1][1] - 1))
             visual.draw_path(path, color)
         
+        # QUERY = remove a mission card
+        elif keyword == "remove":
+            sec_keyword = tokenized[0]
+            tokenized = tokenized[1:]
+            if sec_keyword == "card":
+                my_track.remove_mission_card(int(tokenized[0]))
+        
+        # QUERY exists but could not be processed
         elif len(query.strip()) > 0:
             raise ValueError("Query could not be processed.")
 
@@ -302,6 +374,8 @@ def handle_query(database, board, my_track, log, visual, query):
     
 
 if __name__ == '__main__':
+    random.seed()
+    
     parser = OptionParser()
     parser.add_option("--database", dest="db_path", default=str(DEFAULT_DB_PATH))
     parser.add_option("--board", dest="board_path", default=str(DEFAULT_BOARD_PATH))

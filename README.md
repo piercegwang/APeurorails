@@ -68,5 +68,9 @@ This is an assistant program to the board game, Eurorails. The objective is to p
   - [x] Add mission to existing track
   - [ ] Optimize path generation over missions
   - [x] Re-implement logging to only log with save option on, so that track added to mytrack is removed if not saved
+  - [x] Load missions from saved missions
+  - [x] Improved cost calculation on harbors in terms of travel time; should be treated as having higher cost
 - Major bug fixes
   - [x] Compute costs associated with building to/from major cities correctly
+  - [x] Fix mission output of best load city, which was originally set in error to the end city
+  - [x] Fix output for city query, where only the first city would be outputted to console for each city

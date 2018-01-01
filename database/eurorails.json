@@ -426,7 +426,23 @@
       "budapest",
       "marseille"
     ],
+    "rock": [
+      "budapest",
+      "marseille"
+    ],
     "copper": [
+      "beograd",
+      "wroclaw"
+    ],
+    "anchor": [
+      "beograd",
+      "wroclaw"
+    ],
+    "machine": [
+      "beograd",
+      "wroclaw"
+    ],
+    "pick": [
       "beograd",
       "wroclaw"
     ],
@@ -570,6 +586,16 @@
       "zagreb"
     ],
     "workman": [
+      "beograd",
+      "sarajevo",
+      "zagreb"
+    ],
+    "man": [
+      "beograd",
+      "sarajevo",
+      "zagreb"
+    ],
+    "guy": [
       "beograd",
       "sarajevo",
       "zagreb"
