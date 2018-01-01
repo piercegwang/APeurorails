@@ -1,5 +1,6 @@
 from board import *
 from random import sample
+from itertools import permutations
 
 NUMBER_TRIES = 7
 
@@ -285,6 +286,48 @@ class MyTrack(Track):
 
         all_paths, cost = connect_cities(self.orig_board, self, all_cities, NUMBER_TRIES)
         return all_paths, cost, reward
+
+    def compute_all(self, mission_1, mission_2, mission_3, visual, color, filepath):
+        mission_cards = []
+        if mission_1:
+            if self.has_mission_card(1):
+                mission_cards.append(self.get_mission_card(1))
+                mission_1_options = [1, 2, 3]
+            else:
+                raise Exception("Missing mission card 1.")
+        else:
+            mission_1_options = [0]
+        if mission_2:
+            if self.has_mission_card(2):
+                mission_cards.append(self.get_mission_card(2))
+                mission_2_options = [1, 2, 3]
+            else:
+                raise Exception("Missing mission card 2.")
+        else:
+            mission_2_options = [0]
+        if mission_3:
+            if self.has_mission_card(3):
+                mission_cards.append(self.get_mission_card(3))
+                mission_3_options = [1, 2, 3]
+            else:
+                raise Exception("Missing mission card 3.")
+        else:
+            mission_3_options = [0]
+
+        costs = []
+        rewards = []
+
+        for choice_1 in mission_1_options:
+            for choice_2 in mission_2_options:
+                for choice_3 in mission_3_options:
+                    name_append = str(choice_1) + str(choice_2) + str(choice_3)
+                    p, c, r = self.compute_optimal_track(choice_1, choice_2, choice_3, True) # polymerase chain reaction
+                    visual.save(filepath + "missions_" + name_append + ".png", p, color)
+                    costs.append(c)
+                    rewards.append(r)
+
+        return costs, rewards
+
 
 def connect_cities(board, my_track, cities, number_tries=1):
     def contained(tracks):

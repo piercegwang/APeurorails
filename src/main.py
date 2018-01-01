@@ -10,6 +10,7 @@ DEFAULT_DB_PATH = "../database/eurorails.json"
 DEFAULT_BOARD_PATH = "../database/board_ascii.txt"
 DEFAULT_IMG_PATH = "../database/board.jpg"
 DEFAULT_HARBOR_PATH = "../database/harbors.txt"
+DEFAULT_MISSIONS_PATH = "../results/"
 
 def print_city(database, city):
     entry = database["cities"][city]
@@ -317,7 +318,7 @@ def handle_query(database, board, my_track, log, visual, query):
             elif len(query.strip()) > 0:
                 raise ValueError("Query could not be processed.")
 
-        # QUERY = compute
+        # QUERY = compute best track for select missions
         elif keyword == "compute":
             select_1 = int(tokenized[0])
             select_2 = None
@@ -326,12 +327,22 @@ def handle_query(database, board, my_track, log, visual, query):
                 select_2 = int(tokenized[1])
                 if len(tokenized) >= 3:
                     select_3 = int(tokenized[2])
-            all_paths, cost, reward = my_track.compute_optimal_track(select_1, select_2, select_3)
+            all_paths, cost, reward = my_track.compute_optimal_track(select_1, select_2, select_3, True)
             for p in all_paths:
                 visual.draw_path(p, color)
                 my_track.append_to_queue(p)
             output += "Total Cost: " + str(cost) + "\n    "
             output += "Reward: " + str(reward) + "\n    "
+
+        # QUERY = compute all missions
+        elif keyword == "all" and len(tokenized) >= 3:
+            choose_mission_1 = tokenized[0] == "y"
+            choose_mission_2 = tokenized[1] == "y"
+            choose_mission_3 = tokenized[2] == "y"
+            costs, rewards = my_track.compute_all(choose_mission_1, choose_mission_2, choose_mission_3, visual, color, DEFAULT_MISSIONS_PATH)
+            for i in range(len(costs)):
+                output += "Cost " + str(i+1) + ":   " + str(costs[i]) + "\n      "
+                output += "Reward " + str(i+1) + ": " + str(rewards[i]) + "\n    "
 
         # QUERY = draw a custom path
         elif keyword == "draw":

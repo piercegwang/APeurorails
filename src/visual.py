@@ -81,6 +81,12 @@ class Visual:
         self.panel.configure(image=self.tk_img)
         self.window.update()
 
+    def save(self, filename, paths, color):
+        for p in paths:
+            self.draw_path(p, color)
+        self.board.save(filename, "PNG")
+        self.clean()
+
     def quit(self):
         self.window.quit()
 
