@@ -282,7 +282,6 @@ def find_path(start_city, board, my_track, reached_goal, reverse=True):
     print("No path found")
     return None, None
     # TODO: implement A* search
-    # TODO: balance between cost and distance
 
 
 def connect_cities(board, my_track, cities, number_tries=1):

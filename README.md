@@ -111,17 +111,18 @@ Notes:
 - Major bug fixes
   - [x] Fixed bug where draw function didn't save because it didn't queue
 
-### Future Versions
-
 **Version 4.1**
 - Features
   - [x] Make it possible to load queries from file
+  - [x] Implement better harbor penalization
+  - [x] Clean up README and code
+- Major bug fixes
+  - [x] Fixed bug where load query would only output information on first load in list
+  - [x] Fixed bug with loading points into draw function
+
+### Future Versions
 
 **Version 4.2**
 - Features
   - [ ] Make it possible to load opponent track in game to optimize around opp. track
-  - [x] Implement better harbor penalization
-  - [x] Clean up README and code
   - [ ] Improve cost calculation by setting starting city
-- Major bug fixes
-  - [x] Fixed bug where load query would only output information on first load in list

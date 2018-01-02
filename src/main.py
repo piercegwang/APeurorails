@@ -325,8 +325,8 @@ def handle_query(database, board, my_track, log, visual, results_path, query):
             for loc in tokenized:
                 if loc in database["cities"]: # city
                     path.append(database["cities"][loc]["coords"])
-                elif type(loc) == tuple and len(loc) == 2: # absolute coordinates
-                    path.append(loc)
+                elif loc[0] == '(' and loc[-1] == ')' and type(eval(loc)) == tuple and len(eval(loc)) == 2: # absolute coordinates
+                    path.append(eval(loc))
                 elif len(path) >= 1: # relative path
                     if loc == "r":
                         path.append((path[-1][0] + 1, path[-1][1]))
