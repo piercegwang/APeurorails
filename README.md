@@ -18,6 +18,8 @@ This is an assistant program to the board game, Eurorails. The objective is to p
 
 `add mission <load> <city>` - a shorthand for `add city ... load ...` for a single mission
 
+`add card <load_1> <city_1> <reward_1> <load_2> <city_2> <reward_2> <load_3> <city_3> <reward_3>` for a single card
+
 `remove card #` - removes specified card (by number) from stored data
 
 `compute # # # [include_majors]` - computes the best path for the specified selection of missions and existing track.
