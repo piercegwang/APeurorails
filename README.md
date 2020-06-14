@@ -128,3 +128,6 @@ Notes:
 - Features
   - [ ] Make it possible to load opponent track in game to optimize around opp. track
   - [ ] Improve cost calculation by setting starting city
+  - [ ] Add GUI interface support for identifying coordinates and drawing paths
+  - [ ] Add support for caching all commands executed to file
+  - [ ] Add support for moving train to take into account turn movement
